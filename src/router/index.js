@@ -3,6 +3,8 @@ import HomePage from "@/pages/HomePage";
 import AddCampaignPage from "@/pages/AddCampaignPage";
 import CampaignPage from "@/pages/CampaignPage.vue";
 import AdminModePage from "@/pages/AdminModePage.vue";
+import AddRewardsPage from "@/pages/AddRewardsPage.vue";
+
 
 const routes = [
     {
@@ -24,6 +26,10 @@ const routes = [
         path: "/adminMode",
         name: "AdminMode",
         component: AdminModePage,
+    },
+    {
+        path: "/addRewards",
+        component: AddRewardsPage,
     }
 ]
 
