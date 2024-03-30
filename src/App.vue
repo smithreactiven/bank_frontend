@@ -20,11 +20,12 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
 html, body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'SF Pro Display', sans-serif !important;
   color: white;
-  background-color: #212121;
+  background-color: black;
   touch-action: manipulation;
 }
 

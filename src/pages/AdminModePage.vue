@@ -1,11 +1,146 @@
 <template>
-  Test
+  <v-row>
+    <v-col v-for="i in 1" :key="i" cols="12">
+    </v-col>
+  </v-row>
+  <v-container>
+    <v-container>
+      <h2>Admin Mode</h2>
+      <br>
+      <v-card elevation="0" rounded="lg" color="grey-darken-4" variant="flat">
+      <v-card elevation="0" rounded="lg" class="rounded-b-0" variant="flat" color="grey-darken-4">
+        <v-row class="pt-3 pb-3" align="center">
+          <v-col cols="1">
+          </v-col>
+          <v-col cols="auto">
+            <v-card width="30px" height="30px" color="light-blue-darken-1" rounded="lg">
+              <v-icon class="icon-pending">
+                mdi-plus-box-outline
+              </v-icon>
+            </v-card>
+          </v-col>
+          <v-col cols="auto">
+            Create campaign
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-icon color="grey-darken-1">mdi-chevron-right</v-icon>
+          </v-col>
+          <v-col cols="1">
+          </v-col>
+        </v-row>
+      </v-card>
+        <v-row class="bg-transparent" :no-gutters=true>
+          <v-spacer></v-spacer>
+          <v-col class="bg-transparent" cols="11">
+            <v-sheet height="1px" color="grey-darken-2"></v-sheet>
+          </v-col>
+        </v-row>
+      <v-card @click="alert('d')" rounded="lg" class="rounded-t-0" variant="flat" color="grey-darken-4">
+        <v-row class="pt-3 pb-3" align="center">
+          <v-col cols="1">
+          </v-col>
+          <v-col cols="auto">
+            <v-card width="30px" height="30px" color="green-darken-1" rounded="lg">
+              <v-icon class="icon-pending" color="white">
+                mdi-pencil-box-outline
+              </v-icon>
+            </v-card>
+          </v-col>
+          <v-col cols="auto">
+            Edit campaign
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-icon color="grey-darken-1">mdi-chevron-right</v-icon>
+          </v-col>
+          <v-col cols="1">
+          </v-col>
+        </v-row>
+      </v-card>
+      </v-card>
+
+      <br>
+
+      <v-card @click="alert('d')" rounded="lg" variant="flat" color="grey-darken-4">
+        <v-row class="pt-2 pb-2" align="center">
+          <v-col cols="1">
+          </v-col>
+          <v-col cols="auto">
+            <v-card color="orange" width="30px" height="30px" rounded="lg">
+              <v-icon class="icon-pending" color="white">
+                mdi-list-box-outline
+              </v-icon>
+            </v-card>
+          </v-col>
+          <v-col cols="auto">
+            List done tasks
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+            <v-icon color="grey-darken-1">mdi-chevron-right</v-icon>
+          </v-col>
+          <v-col cols="1">
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-container>
+<!--    <v-container>-->
+<!--      <v-btn prepend-icon="mdi-list-box-outline" class="text-none text-subtitle-1"-->
+<!--             :block=true size="large"-->
+<!--             rounded="lg"-->
+<!--             variant="flat"-->
+<!--             color="grey-darken-4"-->
+<!--      >-->
+<!--        <template v-slot:default>-->
+<!--          <b>List campaign</b>-->
+<!--        </template>-->
+<!--      </v-btn>-->
+<!--    </v-container>-->
+<!--    <v-container>-->
+<!--      <v-btn prepend-icon="mdi-format-list-bulleted" class="text-none text-subtitle-1"-->
+<!--             :block=true size="large"-->
+<!--             rounded="lg"-->
+<!--             variant="flat"-->
+<!--             color="grey-darken-4"-->
+<!--      >-->
+<!--        <template v-slot:default>-->
+<!--          <b>List campaign</b>-->
+<!--        </template>-->
+<!--      </v-btn>-->
+<!--    </v-container>-->
+  </v-container>
 </template>
 
-<script setup>
-
+<script>
+export default {
+  name: "AdminModePage",
+  mounted() {
+    window.Telegram.WebApp.onEvent('backButtonClicked', () => {
+      this.$router.push({ path: '/'});
+    })
+    window.Telegram.WebApp.BackButton.show()
+    // window.Telegram.WebApp.MainButton.setText("Continue with tasks")
+    // window.Telegram.WebApp.MainButton.show()
+  },
+  unmounted() {
+    window.Telegram.WebApp.MainButton.hide()
+    window.Telegram.WebApp.BackButton.hide()
+    window.Telegram.WebApp.offEvent('backButtonClicked')
+  },
+}
 </script>
 
 <style scoped>
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
+.my-font {
+  font-family: 'SF Pro Display', sans-serif !important;
+}
+
+.icon-pending {
+  padding-left: 7px;
+  padding-top: 3px;
+}
 
 </style>
