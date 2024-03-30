@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router"
 import HomePage from "@/pages/HomePage";
 import AddCampaignPage from "@/pages/AddCampaignPage.vue";
+import AddRewardsPage from "@/pages/AddRewardsPage.vue";
+
 
 const routes = [
     {
@@ -12,6 +14,10 @@ const routes = [
         path: "/addCampaign",
         name: "Campaign",
         component: AddCampaignPage,
+    },
+    {
+        path: "/addRewards",
+        component: AddRewardsPage,
     }
 ]
 
