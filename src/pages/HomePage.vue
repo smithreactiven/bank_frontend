@@ -74,7 +74,7 @@ export default {
   data: () => ({
     user_id: null,
     admins: [
-      615311497,
+      615311497, 62207168
     ],
     campaigns: [
       {

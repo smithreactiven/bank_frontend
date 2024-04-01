@@ -8,19 +8,19 @@
       <h2>Admin Mode</h2>
       <br>
       <v-card elevation="0" rounded="lg" color="grey-darken-4" variant="flat">
-      <v-card elevation="0" rounded="lg" class="rounded-b-0" variant="flat" color="grey-darken-4">
+      <v-card @click="redirectToAddCampaign" elevation="0" rounded="lg" class="rounded-b-0" variant="flat" color="grey-darken-4">
         <v-row class="pt-3 pb-3" align="center">
           <v-col cols="1">
           </v-col>
           <v-col cols="auto">
             <v-card width="30px" height="30px" color="light-blue-darken-1" rounded="lg">
               <v-icon class="icon-pending">
-                mdi-plus-box-outline
+                mdi-plus
               </v-icon>
             </v-card>
           </v-col>
           <v-col cols="auto">
-            Create campaign
+            Add campaign
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
@@ -41,9 +41,9 @@
           <v-col cols="1">
           </v-col>
           <v-col cols="auto">
-            <v-card width="30px" height="30px" color="green-darken-1" rounded="lg">
+            <v-card width="30px" height="30px" color="blue-grey" rounded="lg">
               <v-icon class="icon-pending" color="white">
-                mdi-pencil-box-outline
+                mdi-pencil
               </v-icon>
             </v-card>
           </v-col>
@@ -69,7 +69,7 @@
           <v-col cols="auto">
             <v-card color="orange" width="30px" height="30px" rounded="lg">
               <v-icon class="icon-pending" color="white">
-                mdi-list-box-outline
+                mdi-format-list-bulleted
               </v-icon>
             </v-card>
           </v-col>
@@ -128,6 +128,11 @@ export default {
     window.Telegram.WebApp.BackButton.hide()
     window.Telegram.WebApp.offEvent('backButtonClicked')
   },
+  methods: {
+    redirectToAddCampaign() {
+      this.$router.push({name: 'AddCampaign', });
+    },
+  }
 }
 </script>
 

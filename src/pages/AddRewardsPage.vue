@@ -6,7 +6,7 @@
           Upload an icon reward
         </v-btn>
       </v-card>
-    <v-card color="grey-darken-4" rounded="xl" elevation="0">
+    <v-card color="black" rounded="xl" elevation="0">
       <v-col>
         </v-col>
           <v-card-subtitle>
@@ -37,7 +37,14 @@ export default {
     user_id: 0,
   }),
   mounted() {
+    window.Telegram.WebApp.onEvent('backButtonClicked', () => {
+      this.$router.push({ name: 'AddCampaign'});
+    })
     window.Telegram.WebApp.BackButton.show()
+  },
+  unmounted() {
+    window.Telegram.WebApp.BackButton.hide()
+    window.Telegram.WebApp.offEvent('backButtonClicked')
   },
 }
 </script>

@@ -14,7 +14,7 @@ const routes = [
     },
     {
         path: "/addCampaign",
-        name: "addCampaign",
+        name: "AddCampaign",
         component: AddCampaignPage,
     },
     {
@@ -28,7 +28,9 @@ const routes = [
         component: AdminModePage,
     },
     {
+
         path: "/addRewards",
+        name: "AddRewards",
         component: AddRewardsPage,
     }
 ]

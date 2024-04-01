@@ -60,7 +60,7 @@
                       </v-img>
                     </v-card>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="6">
                     {{ task.title }}
                     <v-card-subtitle>
                       {{ task.desc }}
