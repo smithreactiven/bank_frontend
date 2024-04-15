@@ -36,7 +36,7 @@
             <v-sheet height="1px" color="grey-darken-2"></v-sheet>
           </v-col>
         </v-row>
-      <v-card @click="alert('d')" rounded="lg" class="rounded-t-0" variant="flat" color="grey-darken-4">
+      <v-card @click="redirectToEditCampaign" rounded="lg" class="rounded-t-0" variant="flat" color="grey-darken-4">
         <v-row class="pt-3 pb-3" align="center">
           <v-col cols="1">
           </v-col>
@@ -131,6 +131,9 @@ export default {
   methods: {
     redirectToAddCampaign() {
       this.$router.push({name: 'AddCampaign', });
+    },
+    redirectToEditCampaign() {
+      this.$router.push({name: 'EditCampaign', });
     },
   }
 }

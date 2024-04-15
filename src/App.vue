@@ -29,9 +29,6 @@ html, body {
   touch-action: manipulation;
 }
 
-.div {
-  background-color: #3867A7;
-}
 
 
 </style>
