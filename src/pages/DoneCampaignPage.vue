@@ -23,7 +23,7 @@
 <!--              ></v-icon>-->
 <!--          </template>-->
           <template v-slot:default>
-            <label class="button-text">
+            <label class="tg-button-text-color">
               Back
             </label>
           </template>
@@ -68,9 +68,5 @@ export default {
 </script>
 
 <style scoped>
-
-.button-text {
-  color: var(--tg-theme-button-text-color)
-}
 
 </style>

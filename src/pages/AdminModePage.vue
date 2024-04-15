@@ -62,7 +62,7 @@
 
       <br>
 
-      <v-card @click="alert('d')" rounded="lg" variant="flat" color="grey-darken-4">
+      <v-card @click="redirectListDoneCampaign" rounded="lg" variant="flat" color="grey-darken-4">
         <v-row class="pt-2 pb-2" align="center">
           <v-col cols="1">
           </v-col>
@@ -134,6 +134,9 @@ export default {
     },
     redirectToEditCampaign() {
       this.$router.push({name: 'EditCampaign', });
+    },
+    redirectListDoneCampaign() {
+      this.$router.push({name: 'ListDoneCampaign', });
     },
   }
 }

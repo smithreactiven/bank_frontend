@@ -87,7 +87,7 @@
             <v-spacer></v-spacer>
             <v-switch
                 @change="saveCache()"
-                v-model="campaign.one_by_access"
+                v-model="one_by_access"
                 color="green"
                 class="ml-11 pt-5"
                 inset
@@ -243,6 +243,19 @@
           </v-row>
         </v-card-item>
       </v-card>
+      <br>
+      <v-row justify="center">
+        <v-col cols="10">
+          <v-btn @click="createCampaign" class="text-none" rounded="lg" width="100%" variant="flat"
+                 color="var(--tg-theme-button-color)">
+            <template v-slot:default>
+              <label class="tg-button-text-color">
+                Create
+              </label>
+            </template>
+          </v-btn>
+        </v-col>
+      </v-row>
 
     </v-container>
   </v-container>
@@ -266,6 +279,7 @@
         finish_time: "",
         url: null,
       },
+      one_by_access: false,
       reward_currency: "TON",
       reward_amount: "100.00",
       reward_image: null,
@@ -334,9 +348,11 @@
         this.task_groups_count = lscache.get("task_groups").length
         this.countTotalTasks()
       }
-
+      if (lscache.get("one_by_access")) {
+        this.one_by_access = lscache.get("one_by_access")
+      }
       window.Telegram.WebApp.MainButton.setText("Create")
-      window.Telegram.WebApp.MainButton.show()
+      // window.Telegram.WebApp.MainButton.show()
 
       window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
         window.Telegram.WebApp.MainButton.showProgress()
@@ -412,6 +428,7 @@
           data.append('desc', this.campaign.desc);
           data.append('reward_amount', this.reward_amount);
           data.append('reward_currency', this.reward_currency);
+          data.append('one_by_access', this.one_by_access)
           data.append('media', this.upload_images[0]);
           data.append("finish_date", this.finish_date)
           data.append("finish_time", this.finish_time)
@@ -422,19 +439,18 @@
                 window.Telegram.WebApp.MainButton.hide()
                 window.Telegram.WebApp.offEvent('mainButtonClicked')
                 window.Telegram.WebApp.showAlert("Campaign successfully created!")
+                lscache.remove("task_groups")
+                lscache.remove("campaign")
+                lscache.remove("reward_currency")
+                lscache.remove("reward_amount")
+                lscache.remove("reward_image")
+                lscache.remove("finish_date")
+                lscache.remove("finish_time")
                 this.$router.push({name: 'Home'});
               })
               .catch(error => {
                 console.error(error);
               });
-
-          lscache.remove("task_groups")
-          lscache.remove("campaign")
-          lscache.remove("reward_currency")
-          lscache.remove("reward_amount")
-          lscache.remove("reward_image")
-          lscache.remove("finish_date")
-          lscache.remove("finish_time")
         }
       },
       getFileURL(file) {
@@ -505,6 +521,9 @@
           this.finish_time = this.finish_time.slice(0, 5)
         }
         lscache.set("finish_time", this.finish_time)
+      },
+      one_by_access:function (val) {
+        lscache.set("one_by_access", val)
       }
     }
 }

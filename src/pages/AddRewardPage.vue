@@ -48,9 +48,14 @@
           <br>
           <v-row>
             <v-spacer></v-spacer>
-            <v-col cols="auto">
-              <v-btn @click="setReward" color="white" variant="tonal">
-                Set reward
+            <v-col cols="8">
+              <v-btn @click="setReward" class="text-none" rounded="lg" width="100%" variant="flat"
+                     color="var(--tg-theme-button-color)">
+                <template v-slot:default>
+                  <label class="tg-button-text-color">
+                    Save
+                  </label>
+                </template>
               </v-btn>
             </v-col>
             <v-spacer></v-spacer>

@@ -80,7 +80,6 @@
             </v-card-title>
             <div v-for="task in task_group.tasks" :key="task">
               <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-<!--              href="https://github.com/pamelafox/lscache"-->
               <a v-if="!task.is_blocked && !campaign.time_left == 0" href="https://github.com/pamelafox/lscache" class="text-decoration-none">
               <v-card
                   @click="setDoneTask(task_group.id, task.id, task.type)"
@@ -285,7 +284,7 @@ export default {
       axios.post('api/getCampaign', {campaign_id: this.campaign_id})
           .then(response => {
             this.campaign = response.data.campaign
-            this.getCampaignTaskGroups(user_id)
+            this.getCampaignTaskGroups(user_id, response.data.campaign.one_by_access)
             this.page_loading = false
           })
           .catch(error => {
@@ -296,29 +295,31 @@ export default {
       axios.post('api/getCampaign', {campaign_id: this.campaign_id})
           .then(response => {
             this.campaign = response.data.campaign
-            this.getCampaignTaskGroups(this.user_id)
+            this.getCampaignTaskGroups(this.user_id, response.data.campaign.one_by_access)
             this.page_loading = false
           })
           .catch(error => {
             console.error(error);
           });
     },
-    getCampaignTaskGroups(user_id) {
-      axios.post('api/getCampaignTaskGroups', {user_id: user_id, campaign_id: this.campaign_id})
+    getCampaignTaskGroups(user_id, one_by_access) {
+      axios.post('api/getCampaignTaskGroups', {
+        user_id: user_id, campaign_id: this.campaign_id, one_by_access: one_by_access
+      })
           .then(response => {
             this.task_groups = response.data.task_groups
-            if (!response.data.not_done_tasks) {
+            if (response.data.not_done_tasks.length == 0) {
               this.setDoneCampaign()
             }
-            else {
-              // window.Telegram.WebApp.MainButton.show()
-              window.Telegram.WebApp.MainButton.setText("Continue with tasks")
-              let next_task = response.data.not_done_tasks[0]
-              window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
-
-                this.continueWithTasks(next_task)
-              })
-            }
+            // else {
+            //   // window.Telegram.WebApp.MainButton.show()
+            //   window.Telegram.WebApp.MainButton.setText("Continue with tasks")
+            //   let next_task = response.data.not_done_tasks[0]
+            //   window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
+            //
+            //     this.continueWithTasks(next_task)
+            //   })
+            // }
           })
           .catch(error => {
             console.error(error);

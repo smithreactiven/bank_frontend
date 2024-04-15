@@ -90,6 +90,19 @@
         </v-row>
       </v-card>
     </v-card>
+    <v-sheet height="20px" color="black"></v-sheet>
+    <v-row justify="center">
+      <v-col cols="8">
+        <v-btn @click="addTask" class="text-none" rounded="lg" width="100%" variant="flat"
+             color="var(--tg-theme-button-color)">
+        <template v-slot:default>
+          <label class="tg-button-text-color">
+            Save
+          </label>
+        </template>
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -146,12 +159,12 @@ export default {
     if (lscache.get("task_groups")) {
       this.task_groups = lscache.get("task_groups")
     }
-    window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
-      window.Telegram.WebApp.MainButton.showProgress()
-      this.addTask()
-    })
-    window.Telegram.WebApp.MainButton.setText("Add")
-    window.Telegram.WebApp.MainButton.show()
+    // window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
+    //   window.Telegram.WebApp.MainButton.showProgress()
+    //   this.addTask()
+    // })
+    // window.Telegram.WebApp.MainButton.setText("Add")
+    // window.Telegram.WebApp.MainButton.show()
     window.Telegram.WebApp.onEvent('backButtonClicked', () => {
       this.$router.push({ name: 'AddGroupTask'});
     })
@@ -207,37 +220,11 @@ export default {
       lscache.set("task_groups", this.task_groups)
       this.$router.push({ name: 'AddGroupTask'});
     },
-    editTask() {
-      // window.Telegram.WebApp.MainButton.hide()
-      // window.Telegram.WebApp.MainButton.hideProgress()
-      // window.Telegram.WebApp.offEvent('mainButtonClicked')
-      let new_task = {
-        id: this.task_id,
-        type: this.task_type,
-        title: this.title,
-        desc: this.desc,
-        url: this.url,
-        icon: this.emojies[this.selectedEmoji].url
-      }
-      this.task_groups[this.group_id].tasks.push(new_task)
-      lscache.set("task_groups", this.task_groups)
-      this.$router.push({ name: 'AddGroupTask'});
-    },
     onSelectEmoji(id) {
       this.selectedEmoji = id
     },
     getFileURL(file) {
       return URL.createObjectURL(file);
-    },
-    copyLink() {
-      this.hapticImpactOccurred('medium')
-      navigator.clipboard.writeText(this.campaign_url)
-          .then(() => {
-            this.alert = true;
-          })
-          .catch((error) => {
-            console.error("Failed to copy text:", error);
-          });
     },
   }
 }

@@ -10,6 +10,8 @@ import AddTaskPage from "@/pages/AddTaskPage.vue";
 import EditCampaignPage from "@/pages/EditCampaignPage.vue";
 import EditCampaignPage2 from "@/pages/EditCampaignPage2.vue";
 import DoneCampaignPage from "@/pages/DoneCampaignPage.vue";
+import ListDoneCampaignPage from "@/pages/ListDoneCampaignPage.vue";
+import DoneCampaignUsersPage from "@/pages/DoneCampaignUsersPage.vue";
 
 
 const routes = [
@@ -67,6 +69,16 @@ const routes = [
         path: "/editCampaign2",
         name: "EditCampaign2",
         component: EditCampaignPage2,
+    },
+    {
+        path: "/listDoneCampaign",
+        name: "ListDoneCampaign",
+        component: ListDoneCampaignPage,
+    },
+    {
+        path: "/doneCampaignUsers",
+        name: "DoneCampaignUsers",
+        component: DoneCampaignUsersPage,
     },
 ]
 

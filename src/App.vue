@@ -29,6 +29,8 @@ html, body {
   touch-action: manipulation;
 }
 
-
+.tg-button-text-color {
+  color: var(--tg-theme-button-text-color)
+}
 
 </style>
