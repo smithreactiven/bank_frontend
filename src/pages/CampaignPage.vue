@@ -46,7 +46,7 @@
             </v-col>
           </v-row>
         </v-img>
-      </v-card>
+      </v-card >
       <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
       <v-card rounded="lg" color="grey-darken-4">
         <v-row align="center">
