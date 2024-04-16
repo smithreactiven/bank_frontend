@@ -17,9 +17,6 @@
             ]">
         </v-text-field>
 
-          <div v-if="upload_images">
-            {{upload_images[0]}}
-          </div>
         <v-combobox
             variant="outlined"
             v-model="currency"
@@ -113,11 +110,11 @@ export default {
       if (this.upload_images) {
         lscache.set("reward_image", `/api/static/uploads/reward_media_${this.campaign_id}.jpg`)
         this.uploadRewardImage()
+        this.$router.push({ name: 'AddCampaign'});
       }
       else {
         lscache.set("reward_amount", this.amount)
         lscache.set("reward_currency", this.currency)
-
         this.$router.push({ name: 'AddCampaign'});
       }
     },

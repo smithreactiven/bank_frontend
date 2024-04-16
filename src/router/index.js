@@ -7,11 +7,12 @@ import AddRewardPage from "@/pages/AddRewardPage.vue";
 import TaskTemplatePage from "@/pages/TaskTemplatePage.vue";
 import AddGroupTaskPage from "@/pages/AddGroupTaskPage.vue";
 import AddTaskPage from "@/pages/AddTaskPage.vue";
+import ListEditCampaignPage from "@/pages/ListEditCampaignPage.vue";
 import EditCampaignPage from "@/pages/EditCampaignPage.vue";
-import EditCampaignPage2 from "@/pages/EditCampaignPage2.vue";
 import DoneCampaignPage from "@/pages/DoneCampaignPage.vue";
 import ListDoneCampaignPage from "@/pages/ListDoneCampaignPage.vue";
 import DoneCampaignUsersPage from "@/pages/DoneCampaignUsersPage.vue";
+import StoryPage from "@/pages/StoryPage.vue";
 
 
 const routes = [
@@ -61,14 +62,14 @@ const routes = [
         component: AddTaskPage,
     },
     {
+        path: "/listEditCampaign",
+        name: "ListEditCampaign",
+        component: ListEditCampaignPage,
+    },
+    {
         path: "/editCampaign",
         name: "EditCampaign",
         component: EditCampaignPage,
-    },
-    {
-        path: "/editCampaign2",
-        name: "EditCampaign2",
-        component: EditCampaignPage2,
     },
     {
         path: "/listDoneCampaign",
@@ -79,6 +80,11 @@ const routes = [
         path: "/doneCampaignUsers",
         name: "DoneCampaignUsers",
         component: DoneCampaignUsersPage,
+    },
+    {
+        path: "/story",
+        name: "Story",
+        component: StoryPage,
     },
 ]
 

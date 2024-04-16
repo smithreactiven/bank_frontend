@@ -4,7 +4,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     client: {
-      overlay: false,
+      overlay: true,
     },
     https: true,
     proxy: {

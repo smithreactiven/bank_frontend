@@ -47,7 +47,14 @@ export default {
   mounted() {
     this.campaign_id = this.$route.query.campaign_id
     this.getCampaign(this.$route.query.campaign_id)
-
+    window.Telegram.WebApp.onEvent('backButtonClicked', () => {
+      this.$router.push({ path: '/'});
+    })
+    window.Telegram.WebApp.BackButton.show()
+  },
+  unmounted() {
+    window.Telegram.WebApp.BackButton.hide()
+    window.Telegram.WebApp.offEvent('backButtonClicked')
   },
   methods: {
     getCampaign(campaign_id) {
@@ -60,7 +67,7 @@ export default {
           });
     },
     redirectToCampaign() {
-      this.$router.push({name: 'Campaign', query: {campaign_id: this.campaign_id}});
+      this.$router.push({name: 'Home'});
     }
   }
 }

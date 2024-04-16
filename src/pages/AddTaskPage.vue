@@ -6,7 +6,17 @@
       </v-card-subtitle>
       <v-sheet height="4px" color="black"></v-sheet>
       <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
-        <v-text-field hide-details="true" ref="field_1" density="compact" color="white" base-color="white" variant="outlined" rounded="lg" v-model="title" :rules="[
+        <v-text-field
+            hide-details="true"
+            ref="task_title"
+            density="compact"
+            color="white"
+            base-color="white"
+            variant="outlined"
+            rounded="lg"
+            v-model="title"
+            @keyup.enter="hideMobileKeyboardTitle()"
+            :rules="[
                 () => !!title || 'This field is required.',
                 () => !!title && title.length <= 50 || 'No more than 50 characters.',
             ]">
@@ -19,7 +29,18 @@
         What this task about
       </v-card-subtitle>
       <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
-        <v-text-field label="description"  hide-details="true" ref="field_1" density="compact" color="white" base-color="white" variant="outlined" rounded="lg" v-model="desc" :rules="[
+        <v-text-field
+            label="description"
+            hide-details="true"
+            density="compact"
+            color="white"
+            base-color="white"
+            variant="outlined"
+            rounded="lg"
+            ref="task_desc"
+            @keyup.enter="hideMobileKeyboardDesc()"
+            v-model="desc"
+            :rules="[
                 () => !!title || 'This field is required.',
                 () => !!title && title.length <= 50 || 'No more than 50 characters.',
             ]">
@@ -33,7 +54,18 @@
           Link to visit
         </v-card-subtitle>
         <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
-          <v-text-field label="https://"  hide-details="true" ref="field_1" density="compact" color="white" base-color="white" variant="outlined" rounded="lg" v-model="url" :rules="[
+          <v-text-field
+              label="https://"
+              hide-details="true"
+              density="compact"
+              color="white"
+              base-color="white"
+              variant="outlined"
+              rounded="lg"
+              ref="task_url"
+              @keyup.enter="hideMobileKeyboardUrl()"
+              v-model="url"
+              :rules="[
                 () => !!title || 'This field is required.',
                 () => !!title && title.length <= 50 || 'No more than 50 characters.',
             ]">
@@ -55,6 +87,8 @@
                 multiple=""
                 variant="outlined"
                 v-model="uploads_stories"
+                @change="uploadStories"
+
             >
             </v-file-input>
           </v-card-item>
@@ -78,11 +112,27 @@
       <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
         <v-row align="center" justify="center" dense="true">
           <v-col cols="auto" v-for="i in emojies" :key="i">
-            <v-card v-if="i.id === selectedEmoji" variant="tonal"  @click="onSelectEmoji(i.id)" color="white" class="px-2 py-2" rounded="lg" elevation="0">
+            <v-card
+                v-if="i.id === selectedEmoji"
+                variant="tonal"
+                @click="onSelectEmoji(i.id)"
+                color="white"
+                class="px-2 py-2"
+                rounded="lg"
+                elevation="0"
+            >
               <v-img width="25px" height="25px" :src="i.url">
               </v-img>
             </v-card>
-            <v-card v-else variant="tonal" @click="onSelectEmoji(i.id)" color="black" class="px-2 py-2" rounded="lg" elevation="0">
+            <v-card
+                v-else
+                variant="tonal"
+                @click="onSelectEmoji(i.id)"
+                color="black"
+                class="px-2 py-2"
+                rounded="lg"
+                elevation="0"
+            >
               <v-img width="25px" height="25px" :src="i.url">
               </v-img>
             </v-card>
@@ -108,6 +158,9 @@
 
 <script>
 import lscache from "lscache";
+import axios from "axios";
+// const allowedUploadTypes = ["image/png", "image/jpeg", "image/jpg"]
+// const maxUploadSize = 2000000
 
 export default {
   name: "AddTaskPage",
@@ -153,11 +206,15 @@ export default {
       desc: null,
       url: null,
       title: null,
+      story_id: null
     }
   },
   mounted() {
     if (lscache.get("task_groups")) {
       this.task_groups = lscache.get("task_groups")
+    }
+    if (lscache.get("story_id")) {
+      this.story_id = lscache.get("story_id")
     }
     // window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
     //   window.Telegram.WebApp.MainButton.showProgress()
@@ -171,6 +228,7 @@ export default {
     this.group_id = this.$route.query.group_id
     this.task_id = this.$route.query.task_id
     this.task_type = this.$route.query.task_type
+    this.getCampaignHash()
     window.Telegram.WebApp.BackButton.show()
     // window.Telegram.WebApp.MainButton.setText("Continue with tasks")
     // window.Telegram.WebApp.MainButton.show()
@@ -185,10 +243,21 @@ export default {
     window.Telegram.WebApp.offEvent('backButtonClicked')
   },
   methods: {
+    getCampaignHash() {
+      axios.get('api/getRandomHash', )
+          .then(response => {
+            this.story_id = response.data.data
+            lscache.set("story_id", this.story_id)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
     addTask() {
       // window.Telegram.WebApp.MainButton.hide()
       // window.Telegram.WebApp.MainButton.hideProgress()
       // window.Telegram.WebApp.offEvent('mainButtonClicked')
+      lscache.remove("story_id")
       if (!this.task_id) {
         let new_task = {
           id: this.task_groups[this.group_id].tasks.length,
@@ -199,6 +268,7 @@ export default {
           title: this.title,
           desc: this.desc,
           url: this.url,
+          story_id: this.story_id,
           icon: this.emojies[this.selectedEmoji].url
         }
         this.task_groups[this.group_id].tasks.push(new_task)
@@ -213,6 +283,7 @@ export default {
           title: this.title,
           desc: this.desc,
           url: this.url,
+          story_id: this.story_id,
           icon: this.emojies[this.selectedEmoji].url
         };
       }
@@ -220,12 +291,50 @@ export default {
       lscache.set("task_groups", this.task_groups)
       this.$router.push({ name: 'AddGroupTask'});
     },
+    hideMobileKeyboardTitle() {
+      this.$refs.task_title.blur();
+    },
+    hideMobileKeyboardDesc() {
+      this.$refs.task_desc.blur();
+    },
+    hideMobileKeyboardUrl() {
+      this.$refs.task_url.blur();
+    },
     onSelectEmoji(id) {
       this.selectedEmoji = id
     },
     getFileURL(file) {
       return URL.createObjectURL(file);
     },
+    uploadStories(event) {
+      let data = new FormData();
+      let i = 1;
+      for (let selectedImage of event.target.files) {
+        data.append(`media_${i}`, selectedImage);
+        i+=1
+      }
+        // if (selectedImage.size > maxUploadSize) {
+        //   event.target.files = null
+        //   this.uploads_stories = null
+        //   window.Telegram.WebApp.showAlert("Image size should be less than 2 MB")
+        // }
+        // else if (!allowedUploadTypes.includes(selectedImage.type)) {
+        //   event.target.files = null
+        //   this.uploads_stories = null
+        //   window.Telegram.WebApp.showAlert("Allowed types: jpg, png")
+        // }
+        // data.append('campaign_id', this.campaign.id);
+      data.append('story_id', this.story_id);
+
+        axios.post('api/uploadTaskStories', data)
+            .then(() => {
+              console.log("1")
+            })
+            .catch(error => {
+              console.error(error);
+            });
+
+      }
   }
 }
 

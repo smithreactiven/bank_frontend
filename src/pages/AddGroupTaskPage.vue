@@ -37,7 +37,7 @@
                     </v-card>
                   </v-col>
                   <v-col cols="6">
-                    {{ task.title }} {{task.id}}
+                    {{ task.title }}
                     <v-card-subtitle>
                       {{ task.desc }}
                     </v-card-subtitle>

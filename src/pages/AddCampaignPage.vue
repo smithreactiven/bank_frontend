@@ -1,10 +1,9 @@
 <template>
   <v-container>
     <v-container>
-      <div v-if="upload_images">
-        <v-img width="100%" height="200px" :cover="true"  :src="getFileURL(upload_images[0])">
-        </v-img>
-      </div>
+
+      <v-img v-if="campaign_image" width="100%" height="200px" :cover="true"  :src="campaign_image">
+      </v-img>
 
 <!--      <div v-if="reward_image_file">-->
 <!--        <v-img width="64px" height="64px" :cover="true"  :src="getFileURL(reward_image_file)">-->
@@ -21,7 +20,7 @@
       <br>
       <br>
       <v-file-input
-          @change="onUploadImage"
+          @change="uploadCampaignImage"
           :rules="upload_rules"
           accept="image/png, image/jpeg, image/bmp"
           label="Upload an image"
@@ -279,6 +278,7 @@
         finish_time: "",
         url: null,
       },
+      campaign_image: null,
       one_by_access: false,
       reward_currency: "TON",
       reward_amount: "100.00",
@@ -290,8 +290,8 @@
       tasks_count: 0,
       task_groups_count: 0,
       upload_images: null,
-      alert: false,
-      timeout: 2000,
+      snackbar_alert: false,
+      snackbar_timeout: 2000,
       upload_rules: [
         value => {
           return !value || !value.length || value[0].size < maxUploadSize || 'Image size should be less than 2 MB!' || allowedUploadTypes.includes(value[0].type) || "Only jpg, png"
@@ -342,6 +342,9 @@
       if (lscache.get("finish_date")) {
         this.finish_date = lscache.get("finish_date");
       }
+      if (lscache.get("campaign_image")) {
+        this.campaign_image = lscache.get("campaign_image")
+      }
 
       if (lscache.get("task_groups")) {
         this.task_groups = lscache.get("task_groups")
@@ -351,13 +354,13 @@
       if (lscache.get("one_by_access")) {
         this.one_by_access = lscache.get("one_by_access")
       }
-      window.Telegram.WebApp.MainButton.setText("Create")
+      // window.Telegram.WebApp.MainButton.setText("Create")
       // window.Telegram.WebApp.MainButton.show()
 
-      window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
-        window.Telegram.WebApp.MainButton.showProgress()
-        this.createCampaign()
-      })
+      // window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
+      //   window.Telegram.WebApp.MainButton.showProgress()
+      //   this.createCampaign()
+      // })
       // this.checkInitData({_auth: window.Telegram.WebApp.initData})
     },
     unmounted() {
@@ -400,25 +403,14 @@
         this.$router.push({name: 'AddGroupTask', });
       },
       createCampaign() {
-        if (!this.upload_images) {
-          window.Telegram.WebApp.MainButton.hideProgress()
+        if (!this.campaign_image) {
           window.Telegram.WebApp.showAlert("Upload an image")
-        }
-        else if (this.upload_images[0].size > maxUploadSize) {
-          window.Telegram.WebApp.MainButton.hideProgress()
-          window.Telegram.WebApp.showAlert("Image size should be less than 2 MB")
-        }
-        else if (!allowedUploadTypes.includes(this.upload_images[0].type)) {
-          window.Telegram.WebApp.MainButton.hideProgress()
-          window.Telegram.WebApp.showAlert("Allowed types: jpg, png")
         }
         else if (!this.campaign.title) {
           window.Telegram.WebApp.showAlert("Title is is required field")
-          window.Telegram.WebApp.MainButton.hideProgress()
         }
         else if (!this.campaign.desc) {
           window.Telegram.WebApp.showAlert("Description is is required field")
-          window.Telegram.WebApp.MainButton.hideProgress()
         }
         else {
           let data = new FormData();
@@ -429,20 +421,18 @@
           data.append('reward_amount', this.reward_amount);
           data.append('reward_currency', this.reward_currency);
           data.append('one_by_access', this.one_by_access)
-          data.append('media', this.upload_images[0]);
+          // data.append('media', this.upload_images[0]);
           data.append("finish_date", this.finish_date)
           data.append("finish_time", this.finish_time)
 
           this.addCampaignTaskGroups()
           axios.post('api/createCampaign', data).then(() => {
-                window.Telegram.WebApp.MainButton.hideProgress()
-                window.Telegram.WebApp.MainButton.hide()
-                window.Telegram.WebApp.offEvent('mainButtonClicked')
                 window.Telegram.WebApp.showAlert("Campaign successfully created!")
                 lscache.remove("task_groups")
                 lscache.remove("campaign")
                 lscache.remove("reward_currency")
                 lscache.remove("reward_amount")
+                lscache.remove("campaign_image")
                 lscache.remove("reward_image")
                 lscache.remove("finish_date")
                 lscache.remove("finish_time")
@@ -452,9 +442,6 @@
                 console.error(error);
               });
         }
-      },
-      getFileURL(file) {
-        return URL.createObjectURL(file);
       },
       getCampaignHash() {
         axios.get('api/getRandomHash', )
@@ -477,12 +464,38 @@
             console.error("Failed to copy text:", error);
           });
       },
-      onUploadImage(event) {
-          let selectedImage = event.target.files[0]
-          if (selectedImage.size > maxUploadSize) {
-            event.target.files = null
-            this.upload_images = null
-          }
+      uploadCampaignImage(event) {
+        let selectedImage = event.target.files[0]
+        if (selectedImage.size > maxUploadSize) {
+          event.target.files = null
+          this.upload_images = null
+          window.Telegram.WebApp.showAlert("Image size should be less than 2 MB")
+        }
+        else if (!allowedUploadTypes.includes(selectedImage.type)) {
+          event.target.files = null
+          this.upload_images = null
+          window.Telegram.WebApp.showAlert("Allowed types: jpg, png")
+        }
+        else {
+          let data = new FormData();
+          data.append('id', this.campaign.id);
+          data.append('media', selectedImage);
+          axios.post('api/uploadCampaignImage', data)
+              .then(() => {
+                this.upload_images = null
+                this.campaign_image = null
+                setTimeout(this.changeImage, 1000)
+
+              })
+              .catch(error => {
+                console.error(error);
+              });
+        }
+
+      },
+      changeImage() {
+        this.campaign_image = `/api/static/uploads/campaign_media_${this.campaign.id}.jpg`
+        lscache.set("campaign_image", this.campaign_image)
       },
       clearFinishDate() {
           this.finish_date = ""

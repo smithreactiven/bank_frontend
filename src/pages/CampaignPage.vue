@@ -5,6 +5,28 @@
       <v-skeleton-loader size="x-large" color="grey-darken-4" class="rounded-lg" type="image"></v-skeleton-loader>
     </div>
     <div v-else>
+      <v-row>
+        <v-col cols="auto">
+          <v-btn
+              @click="copyLink"
+              width="100%"
+               size="small"
+               rounded="xl"
+               variant="tonal"
+               color="var(--tg-theme-button-color)"
+               class="text-none text-subtitle-4"
+          >
+            <template v-slot:prepend>
+              <v-icon icon="mdi-content-copy">
+              </v-icon>
+            </template>
+            <template v-slot:default>
+              <label>Copy link</label>
+            </template>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-sheet class="bg-transparent" height="20px" elevation="0"></v-sheet>
       <v-card class="bg-transparent" rounded="lg">
         <v-img cover="true" :src=campaign.image height="200px" rounded="lg">
           <v-row v-if="campaign.time_left == 0" dense="true" class="time-left">
@@ -25,9 +47,7 @@
           </v-row>
         </v-img>
       </v-card>
-
       <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-
       <v-card rounded="lg" color="grey-darken-4">
         <v-row align="center">
           <v-col cols="auto">
@@ -55,7 +75,7 @@
       <br>
     </div>
     <v-card color="black" v-else>
-      <v-card-title>
+      <v-card-title class="text-pre-line">
         {{ campaign.title }}
       </v-card-title>
       <v-card-text class="pre-subtitle">
@@ -75,91 +95,100 @@
         <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
         <v-card color="black">
           <v-card-item>
-            <v-card-title>
+            <v-card-title class="text-pre-line">
               {{ task_group.title }}
             </v-card-title>
             <div v-for="task in task_group.tasks" :key="task">
               <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-              <a v-if="!task.is_blocked && !campaign.time_left == 0" href="https://github.com/pamelafox/lscache" class="text-decoration-none">
-              <v-card
-                  @click="setDoneTask(task_group.id, task.id, task.type)"
-                  color="grey-lighten-4"
-                  rounded="lg"
-                  variant="outlined"
-                  :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
-              >
-                <v-card-item>
-                  <v-row align="center">
-                    <v-col cols="auto">
-                      <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="grey-darken-4" loading="true" rounded="lg">
-                      </v-btn>
-                      <v-card v-else class="px-2 py-2" color="grey-darken-4" rounded="lg">
-                        <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
-                          mdi-check
-                        </v-icon>
-                        <v-icon v-else-if="task.is_blocked" width="25px" height="25px">
-                          mdi-lock
-                        </v-icon>
-                        <v-img v-else width="25px" height="25px" :src="task.icon">
-                        </v-img>
-                      </v-card>
-                    </v-col>
-                    <v-col cols="6">
-                      {{ task.title }}
-                      <v-card-subtitle>
-                        {{ task.desc }}
-                      </v-card-subtitle>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <!--                  <v-col cols="auto">-->
-                    <!--                    <v-chip>{{ task.points }}</v-chip>-->
-                    <!--                  </v-col>-->
-                  </v-row>
-                </v-card-item>
-              </v-card>
-              </a>
-              <v-card v-else
-                  @click="setDoneTask(task_group.id, task.id, task.type)"
-                  color="grey-lighten-4"
-                  rounded="lg"
-                  variant="outlined"
-                  :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
-              >
-                <v-card-item>
-                  <v-row align="center">
-                    <v-col cols="auto">
-                      <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="grey-darken-4" loading="true" rounded="lg">
-                      </v-btn>
-                      <v-card v-else class="px-2 py-2" color="grey-darken-4" rounded="lg">
-                        <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
-                          mdi-check
-                        </v-icon>
-                        <v-icon v-else-if="task.is_blocked" width="25px" height="25px">
-                          mdi-lock
-                        </v-icon>
-                        <v-img v-else width="25px" height="25px" :src="task.icon">
-                        </v-img>
-                      </v-card>
-                    </v-col>
-                    <v-col cols="6">
-                      {{ task.title }}
-                      <v-card-subtitle>
-                        {{ task.desc }}
-                      </v-card-subtitle>
-                    </v-col>
-                    <v-spacer></v-spacer>
-                    <!--                  <v-col cols="auto">-->
-                    <!--                    <v-chip>{{ task.points }}</v-chip>-->
-                    <!--                  </v-col>-->
-                  </v-row>
-                </v-card-item>
-              </v-card>
-            </div>
+                <a v-if="!task.is_blocked && !campaign.time_left == 0" :href="task.url" target="_blank" class="text-decoration-none">
+                  <v-card
+                      @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
+                      color="grey-lighten-4"
+                      rounded="lg"
+                      variant="outlined"
+                      :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
+                  >
+                    <v-card-item>
+                      <v-row align="center">
+                        <v-col cols="auto">
+                          <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="grey-darken-4" loading="true" rounded="lg">
+                          </v-btn>
+                          <v-card v-else class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                            <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
+                              mdi-check
+                            </v-icon>
+                            <v-icon v-else-if="task.is_blocked" width="25px" height="25px">
+                              mdi-lock
+                            </v-icon>
+                            <v-img v-else width="25px" height="25px" :src="task.icon">
+                            </v-img>
+                          </v-card>
+                        </v-col>
+                        <v-col cols="6">
+                          {{ task.title }}
+                          <v-card-subtitle>
+                            {{ task.desc }}
+                          </v-card-subtitle>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <!--                  <v-col cols="auto">-->
+                        <!--                    <v-chip>{{ task.points }}</v-chip>-->
+                        <!--                  </v-col>-->
+                      </v-row>
+                    </v-card-item>
+                  </v-card>
+                </a>
+                <v-card v-else
+                        @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
+                        color="grey-lighten-4"
+                        rounded="lg"
+                        variant="outlined"
+                        :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
+                >
+                  <v-card-item>
+                    <v-row align="center">
+                      <v-col cols="auto">
+                        <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="grey-darken-4" loading="true" rounded="lg">
+                        </v-btn>
+                        <v-card v-else class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                          <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
+                            mdi-check
+                          </v-icon>
+                          <v-icon v-else-if="task.is_blocked" width="25px" height="25px">
+                            mdi-lock
+                          </v-icon>
+                          <v-img v-else width="25px" height="25px" :src="task.icon">
+                          </v-img>
+                        </v-card>
+                      </v-col>
+                      <v-col cols="6">
+                        {{ task.title }}
+                        <v-card-subtitle>
+                          {{ task.desc }}
+                        </v-card-subtitle>
+                      </v-col>
+                      <v-spacer></v-spacer>
+                      <!--                  <v-col cols="auto">-->
+                      <!--                    <v-chip>{{ task.points }}</v-chip>-->
+                      <!--                  </v-col>-->
+                    </v-row>
+                  </v-card-item>
+                </v-card>
+              </div>
           </v-card-item>
         </v-card>
       </div>
     </div>
+    <v-snackbar
+        v-model="snackbar_show"
+        :timeout="snackbar_timeout"
+        color="success"
+        variant="flat"
 
+    >
+      <v-icon size="small">mdi-content-copy</v-icon>
+      Link copied successfully!
+    </v-snackbar>
   </v-container>
 
 </template>
@@ -196,20 +225,21 @@ export default {
         reward_currency: "TON",
         reward_amount: "100.00",
       },
-      task_groups: [
+      snackbar_show: false,
+      snackbar_timeout: 2000,
+      task_groups: [],
+      task_groups2: [
         {
           title: "Task #1",
           tasks: [
             {
               title: "Subscribe to Entony",
               desc: "Description",
-              points: 10,
               image: "./img_1.png",
             },
             {
               title: "Subscribe to Anna",
               desc: "",
-              points: 20,
               image: "https://em-content.zobj.net/source/apple/391/grinning-squinting-face_1f606.png"
             }
           ]
@@ -220,7 +250,6 @@ export default {
             {
               title: "Check story TON",
               desc: "Description",
-              points: 50,
               image: "https://em-content.zobj.net/source/apple/391/love-letter_1f48c.png"
             },
           ]
@@ -273,7 +302,7 @@ export default {
       axios.post('api/setDoneCampaign', {user_id: this.user_id, username: this.username, campaign_id: this.campaign_id})
           .then(response => {
             if (response.data.status === 200) {
-              this.redirectToDoneCampaign()
+              setTimeout(this.redirectToDoneCampaign,2000)
             }
           })
           .catch(error => {
@@ -285,7 +314,6 @@ export default {
           .then(response => {
             this.campaign = response.data.campaign
             this.getCampaignTaskGroups(user_id, response.data.campaign.one_by_access)
-            this.page_loading = false
           })
           .catch(error => {
             console.error(error);
@@ -296,7 +324,6 @@ export default {
           .then(response => {
             this.campaign = response.data.campaign
             this.getCampaignTaskGroups(this.user_id, response.data.campaign.one_by_access)
-            this.page_loading = false
           })
           .catch(error => {
             console.error(error);
@@ -308,6 +335,7 @@ export default {
       })
           .then(response => {
             this.task_groups = response.data.task_groups
+            this.page_loading = false
             if (response.data.not_done_tasks.length == 0) {
               this.setDoneCampaign()
             }
@@ -330,29 +358,43 @@ export default {
       // lscache.set("loading_btn", true, 1)
       // setTimeout(this.changeLoading2, 10000);
     },
-    setDoneTask(group_id, task_id, task_type) {
+    setDoneTask(group_id, task_id, task_type, story_id = 0) {
       this.changeLoading()
       this.task_groups[group_id].tasks[task_id].is_loading = true
-      axios.post('api/setDoneTask', {
-        user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
-      })
-          .then(() => {
-            setTimeout(this.getCampaign2, 1000)
-          })
-          .catch(error => {
-            console.error(error);
-        });
       if (["subscribe", "open_link"].includes(task_type)) {
-        console.log("ok")
+        axios.post('api/setDoneTask', {
+          user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
+        }).then(() => {
+          setTimeout(this.getCampaign2,3000)
+        }).catch(error => {
+          console.error(error);
+        });
+      }
+      else {
+        axios.post('api/setDoneTask', {
+          user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
+        })
+        this.openStory(story_id)
       }
     },
-    continueWithTasks(next_task) {
-      window.Telegram.WebApp.offEvent('mainButtonClicked')
-      window.Telegram.WebApp.MainButton.hide()
-      this.setDoneTask(next_task.group_id, next_task.task.id, next_task.task.type)
-      setTimeout(window.Telegram.WebApp.MainButton.hideProgress, 2000)
+    openStory(story_id) {
+      this.$router.push({ name: 'Story', query: {story_id: story_id, campaign_id: this.campaign_id}});
 
-    }
+      // this.setDoneTask(task_group_id, task_type, task_type)
+    },
+    copyLink() {
+      this.hapticImpactOccurred('medium')
+      navigator.clipboard.writeText(this.campaign.url)
+          .then(() => {
+            this.snackbar_show = true;
+          })
+          .catch((error) => {
+            console.error("Failed to copy text:", error);
+          });
+    },
+    hapticImpactOccurred(style) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred(style);
+    },
   }
 }
 
@@ -363,5 +405,17 @@ export default {
 .custom-border {
   border: #757575 1px solid;
 }
+
+.copy-input {
+  color: var(--tg-theme-link-color);
+  width: 100%;
+  font-size: 12px;
+}
+
+.pre-line {
+  white-space: pre-line !important;
+}
+
+
 
 </style>

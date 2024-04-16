@@ -13,7 +13,7 @@
           <v-col cols="1">
           </v-col>
           <v-col cols="auto">
-            <v-card width="30px" height="30px" color="light-blue-darken-1" rounded="lg">
+            <v-card width="30px" variant="tonal" height="30px" color="green" rounded="lg">
               <v-icon class="icon-pending">
                 mdi-plus
               </v-icon>
@@ -41,8 +41,8 @@
           <v-col cols="1">
           </v-col>
           <v-col cols="auto">
-            <v-card width="30px" height="30px" color="blue-grey" rounded="lg">
-              <v-icon class="icon-pending" color="white">
+            <v-card variant="tonal" width="30px" height="30px" color="blue" rounded="lg">
+              <v-icon class="icon-pending">
                 mdi-pencil
               </v-icon>
             </v-card>
@@ -67,8 +67,8 @@
           <v-col cols="1">
           </v-col>
           <v-col cols="auto">
-            <v-card color="orange" width="30px" height="30px" rounded="lg">
-              <v-icon class="icon-pending" color="white">
+            <v-card variant="tonal" color="orange" width="30px" height="30px" rounded="lg">
+              <v-icon class="icon-pending">
                 mdi-format-list-bulleted
               </v-icon>
             </v-card>
@@ -133,7 +133,7 @@ export default {
       this.$router.push({name: 'AddCampaign', });
     },
     redirectToEditCampaign() {
-      this.$router.push({name: 'EditCampaign', });
+      this.$router.push({name: 'ListEditCampaign', });
     },
     redirectListDoneCampaign() {
       this.$router.push({name: 'ListDoneCampaign', });
