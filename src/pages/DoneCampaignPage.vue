@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <br>
-    <v-card color="black" class="text-center">
+    <v-card color="#070B14" class="text-center">
       <v-card-item v-if="campaign">
         <v-img cl height="128px" width="128px" :cover="true" class="mx-auto rounded-lg" :src="campaign.reward_image"></v-img>
       </v-card-item>

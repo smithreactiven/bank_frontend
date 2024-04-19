@@ -5,18 +5,26 @@
   </div>
   <div v-if="page_loading">
     <v-container v-for="index in 4" :key="index">
-      <v-skeleton-loader color="grey-darken-4" class="rounded-lg" type="image, article"></v-skeleton-loader>
+      <v-skeleton-loader color="#16142C" class="rounded-lg" type="image, article"></v-skeleton-loader>
     </v-container>
   </div>
   <div v-else>
-    <v-container  @click="redirectToEditCampaignPage(campaign.id)" v-for="campaign in campaigns" :key="campaign">
-      <v-card color="grey-darken-4" rounded="lg">
+    <v-container v-for="campaign in campaigns" :key="campaign">
+      <v-card @click="redirectToEditCampaignPage(campaign.id)" color="#16142C" rounded="lg">
         <v-img cover="true" :src=campaign.image height="200px" rounded="lg">
-          <v-row v-if="campaign.time_left === 0" dense="true" class="time-left">
+          <v-row v-if="campaign.time_left == 0" dense="true" class="time-left">
             <v-spacer></v-spacer>
             <v-col cols="auto">
               <v-chip variant="flat" size="large">
                 finished
+              </v-chip>
+            </v-col>
+          </v-row>
+          <v-row v-else-if="campaign.time_left >= 999" dense="true" class="time-left">
+            <v-spacer></v-spacer>
+            <v-col cols="auto">
+              <v-chip color="white" variant="tonal" size="large">
+                active
               </v-chip>
             </v-col>
           </v-row>
@@ -37,9 +45,26 @@
           {{ campaign.desc }}
         </v-card-subtitle>
         <v-card-item>
-          <v-chip size="large">
-            {{ campaign.reward_amount }} {{ campaign.reward_currency }}
-          </v-chip>
+          <v-row align="center">
+            <v-col cols="auto">
+              <v-chip size="large">
+                <v-img v-if="campaign.reward_image" cover="true" :src=campaign.reward_image width="24" height="24" class="rounded-lg">
+                </v-img>
+                <div class="pl-2">{{ campaign.reward_amount }} {{ campaign.reward_currency }}</div>
+              </v-chip>
+            </v-col>
+          </v-row>
+        </v-card-item>
+      </v-card>
+      <v-card class="bg-transparent">
+        <v-card-item>
+          <v-row align="center">
+            <v-spacer></v-spacer>
+            <v-col cols="auto">
+              <v-btn @click="deleteCampaign(campaign.id)" size="small" class="rounded-lg" variant="tonal" color="red" icon="mdi-delete">
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-item>
       </v-card>
     </v-container>
@@ -125,6 +150,22 @@ export default {
     redirectToEditCampaignPage(campaign_id) {
       this.$router.push({ name: 'EditCampaign', query: {campaign_id: campaign_id, }});
     },
+    deleteCampaign(campaign_id) {
+      window.Telegram.WebApp.showConfirm("Are you sure you want to delete this campaign?", (confirm) => {
+            if (confirm) {
+              axios.post('api/deleteCampaign', {
+                campaign_id: campaign_id,
+              }).then((response) => {
+                if (response.data.status) {
+                  this.page_loading = true
+                  this.getCampaigns()
+                }
+              }).catch(error => {
+                console.error(error);
+              });
+            }
+        })
+    }
   }
 }
 

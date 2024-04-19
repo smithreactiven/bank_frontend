@@ -3,14 +3,20 @@
     <v-btn @click="allClear()" variant="tonal" color="red">
       Clear
     </v-btn>
-
     <div v-for="task_group in task_groups" :key="task_group">
       <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-      <v-card color="black">
+      <v-card color="#070B14">
         <v-card-item>
           <v-row align="center" justify="end" dense="">
             <v-col cols="9">
-              <v-text-field v-model="task_group.title" hide-details rounded="lg" variant="outlined">
+              <v-text-field
+                  v-model="task_group.title"
+                  @change="saveCache()"
+                  @keyup.enter="hideKeyboard"
+                  density="compact"
+                  rounded="lg"
+                  variant="outlined"
+              >
               </v-text-field>
             </v-col>
             <v-col cols="1">
@@ -20,7 +26,17 @@
             </v-col>
             <v-spacer></v-spacer>
             <v-col cols="12">
-              <v-text-field v-model="task_group.desc" bg-color="grey-darken-4" rounded="lg" hide-details style="width: 100%;" density="compact" variant="solo-filled">
+              <v-text-field
+                  v-model="task_group.desc"
+                  @change="saveCache()"
+                  @keyup.enter="hideKeyboard"
+                  bg-color="#16142C"
+                  rounded="lg"
+                  hide-details
+                  style="width: 100%;"
+                  density="compact"
+                  variant="solo-filled"
+              >
               </v-text-field>
             </v-col>
           </v-row>
@@ -31,7 +47,7 @@
               <v-card-item>
                 <v-row align="center">
                   <v-col cols="auto">
-                    <v-card class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                    <v-card class="px-2 py-2" color="#16142C" rounded="lg">
                       <v-img width="25px" height="25px" :src="task.icon">
                       </v-img>
                     </v-card>
@@ -52,7 +68,7 @@
             <v-card-item>
               <v-row align="center">
                 <v-col cols="auto">
-                  <v-card class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                  <v-card class="px-2 py-2" color="#16142C" rounded="lg">
                     <v-icon width="25px" height="25px">
                       mdi-plus
                     </v-icon>
@@ -76,7 +92,7 @@
           <v-card-item>
             <v-row align="center">
               <v-col cols="auto">
-                <v-card class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                <v-card class="px-2 py-2" color="#16142C" rounded="lg">
                   <v-icon width="25px" height="25px">
                     mdi-plus
                   </v-icon>
@@ -96,6 +112,7 @@
 
 <script>
 import lscache from "lscache";
+import {h} from "vue";
 export default {
   name: "AddGroupTaskPage",
   data () {
@@ -156,6 +173,7 @@ export default {
     window.Telegram.WebApp.offEvent('backButtonClicked')
   },
   methods: {
+    h,
     allClear() {
       this.task_groups = []
       lscache.set("task_groups", this.task_groups)
@@ -178,7 +196,13 @@ export default {
       for (let i = 0; i < this.task_groups.length; i++) {
         this.task_groups[i].id = i
       }
-
+    },
+    saveCache() {
+      lscache.set("task_groups", this.task_groups)
+    },
+    hideKeyboard(event) {
+      event.preventDefault();
+      event.target.blur();
     }
   }
 }

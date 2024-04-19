@@ -5,18 +5,26 @@
   </div>
   <div v-if="page_loading">
     <v-container v-for="index in 4" :key="index">
-      <v-skeleton-loader color="grey-darken-4" class="rounded-lg" type="image, article"></v-skeleton-loader>
+      <v-skeleton-loader color="#16142C" class="rounded-lg" type="image, article"></v-skeleton-loader>
     </v-container>
   </div>
   <div v-else>
     <v-container @click="redirectToCampaignPage(campaign.id)" v-for="campaign in campaigns" :key="campaign">
-      <v-card color="grey-darken-4" rounded="lg">
+      <v-card color="#16142C" rounded="lg">
         <v-img cover="true" :src=campaign.image height="200px" rounded="lg">
-          <v-row v-if="campaign.time_left === 0" dense="true" class="time-left">
+          <v-row v-if="campaign.time_left == 0" dense="true" class="time-left">
             <v-spacer></v-spacer>
             <v-col cols="auto">
               <v-chip variant="flat" size="large">
                 finished
+              </v-chip>
+            </v-col>
+          </v-row>
+          <v-row v-else-if="campaign.time_left >= 999" dense="true" class="time-left">
+            <v-spacer></v-spacer>
+            <v-col cols="auto">
+              <v-chip color="white" variant="tonal" size="large">
+                active
               </v-chip>
             </v-col>
           </v-row>
@@ -37,9 +45,15 @@
           {{ campaign.desc }}
         </v-card-subtitle>
         <v-card-item>
-          <v-chip size="large">
-            {{ campaign.reward_amount }} {{ campaign.reward_currency }}
-          </v-chip>
+          <v-row align="center">
+            <v-col cols="auto">
+              <v-chip size="large">
+                <v-img v-if="campaign.reward_image" cover="true" :src=campaign.reward_image width="24" height="24" class="rounded-lg">
+                </v-img>
+                <div class="pl-2">{{ campaign.reward_amount }} {{ campaign.reward_currency }}</div>
+              </v-chip>
+            </v-col>
+          </v-row>
         </v-card-item>
       </v-card>
     </v-container>

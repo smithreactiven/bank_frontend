@@ -1,8 +1,9 @@
 <template>
+  <v-app class="bg-transparent">
   <v-container>
 
     <div v-if="page_loading">
-      <v-skeleton-loader size="x-large" color="grey-darken-4" class="rounded-lg" type="image"></v-skeleton-loader>
+      <v-skeleton-loader size="x-large" color="#16142C" class="rounded-lg" type="image"></v-skeleton-loader>
     </div>
     <div v-else>
       <v-row>
@@ -13,7 +14,7 @@
                size="small"
                rounded="xl"
                variant="tonal"
-               color="var(--tg-theme-button-color)"
+               color="deep-purple-accent-1"
                class="text-none text-subtitle-4"
           >
             <template v-slot:prepend>
@@ -27,13 +28,21 @@
         </v-col>
       </v-row>
       <v-sheet class="bg-transparent" height="20px" elevation="0"></v-sheet>
-      <v-card class="bg-transparent" rounded="lg">
+      <v-card elevation="0" class="bg-transparent" rounded="lg">
         <v-img cover="true" :src=campaign.image height="200px" rounded="lg">
           <v-row v-if="campaign.time_left == 0" dense="true" class="time-left">
             <v-spacer></v-spacer>
             <v-col cols="auto">
               <v-chip variant="flat" size="large">
                 finished
+              </v-chip>
+            </v-col>
+          </v-row>
+          <v-row v-else-if="campaign.time_left >= 999" dense="true" class="time-left">
+            <v-spacer></v-spacer>
+            <v-col cols="auto">
+              <v-chip color="white" variant="tonal" size="large">
+                active
               </v-chip>
             </v-col>
           </v-row>
@@ -48,7 +57,7 @@
         </v-img>
       </v-card >
       <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-      <v-card rounded="lg" color="grey-darken-4">
+      <v-card elevation="0" rounded="lg" color="#16142C">
         <v-row align="center">
           <v-col cols="auto">
             <v-card-item>
@@ -71,10 +80,10 @@
 
     <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
     <div v-if="page_loading">
-      <v-skeleton-loader size="x-large" color="grey-darken-4" class="rounded-lg" type="article"></v-skeleton-loader>
+      <v-skeleton-loader size="x-large" color="#16142C" class="rounded-lg" type="article"></v-skeleton-loader>
       <br>
     </div>
-    <v-card color="black" v-else>
+    <v-card elevation="0" color="#070B14" v-else>
       <v-card-title class="text-pre-line">
         {{ campaign.title }}
       </v-card-title>
@@ -85,7 +94,7 @@
 
     <div v-if="page_loading">
       <div v-for="i in 4" :key="i">
-        <v-skeleton-loader size="x-large" color="grey-darken-4" class="rounded-lg" type="list-item-two-line">
+        <v-skeleton-loader size="x-large" color="#16142C" class="rounded-lg" type="list-item-two-line">
         </v-skeleton-loader>
         <br>
       </div>
@@ -93,27 +102,27 @@
     <div v-else>
       <div v-for="task_group in task_groups" :key="task_group">
         <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-        <v-card color="black">
+        <v-card elevation="0" color="#070B14">
           <v-card-item>
             <v-card-title class="text-pre-line">
               {{ task_group.title }}
             </v-card-title>
             <div v-for="task in task_group.tasks" :key="task">
               <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-                <a v-if="!task.is_blocked && !campaign.time_left == 0" :href="task.url" target="_blank" class="text-decoration-none">
+                <a v-if="!task.is_blocked && !campaign.time_left == 0 && !task.is_done" :href="task.url" target="_blank" class="text-decoration-none">
                   <v-card
+                      elevation="0"
                       @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
-                      color="grey-lighten-4"
+                      color="deep-purple-accent-1"
                       rounded="lg"
-                      variant="outlined"
-                      :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
+                      variant="tonal"
                   >
                     <v-card-item>
                       <v-row align="center">
                         <v-col cols="auto">
-                          <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="grey-darken-4" loading="true" rounded="lg">
+                          <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="#16142C" loading="true" rounded="lg">
                           </v-btn>
-                          <v-card v-else class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                          <v-card elevation="0" v-else class="px-2 py-2" color="#16142C" rounded="lg">
                             <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
                               mdi-check
                             </v-icon>
@@ -124,9 +133,9 @@
                             </v-img>
                           </v-card>
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="6" class="text-white">
                           {{ task.title }}
-                          <v-card-subtitle>
+                          <v-card-subtitle class="text-white">
                             {{ task.desc }}
                           </v-card-subtitle>
                         </v-col>
@@ -138,19 +147,21 @@
                     </v-card-item>
                   </v-card>
                 </a>
-                <v-card v-else
-                        @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
-                        color="grey-lighten-4"
-                        rounded="lg"
-                        variant="outlined"
-                        :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
+                <v-card
+                    elevation="0"
+                    v-else
+                    @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
+                    color="#16142C"
+                    rounded="lg"
+                    variant="outlined"
+                    :disabled="task.is_done || task.is_blocked || campaign.time_left == 0"
                 >
                   <v-card-item>
                     <v-row align="center">
                       <v-col cols="auto">
-                        <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="grey-darken-4" loading="true" rounded="lg">
+                        <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="#16142C" loading="true" rounded="lg">
                         </v-btn>
-                        <v-card v-else class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                        <v-card elevation="0" v-else class="px-2 py-2" color="#16142C" rounded="lg">
                           <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
                             mdi-check
                           </v-icon>
@@ -161,16 +172,12 @@
                           </v-img>
                         </v-card>
                       </v-col>
-                      <v-col cols="6">
+                      <v-col cols="6" class="text-white">
                         {{ task.title }}
-                        <v-card-subtitle>
+                        <v-card-subtitle class="text-white">
                           {{ task.desc }}
                         </v-card-subtitle>
                       </v-col>
-                      <v-spacer></v-spacer>
-                      <!--                  <v-col cols="auto">-->
-                      <!--                    <v-chip>{{ task.points }}</v-chip>-->
-                      <!--                  </v-col>-->
                     </v-row>
                   </v-card-item>
                 </v-card>
@@ -189,8 +196,19 @@
       <v-icon size="small">mdi-content-copy</v-icon>
       Link copied successfully!
     </v-snackbar>
+<!--    <v-bottom-navigation height="100px" grow="true" bg-color="var(&#45;&#45;tg-theme-secondary-bg-color)">-->
+<!--      <v-row justify="center" align="start" class="py-3 px-1">-->
+<!--        <v-col cols="11">-->
+<!--          <v-card density="compact" color="deep-purple-accent-3" variant="flat" rounded="lg">-->
+<!--            <v-btn  density="compact" rounded="lg" width="100%">-->
+<!--              <span>Continue with tasks</span>-->
+<!--            </v-btn>-->
+<!--          </v-card>-->
+<!--        </v-col>-->
+<!--      </v-row>-->
+<!--    </v-bottom-navigation>-->
   </v-container>
-
+  </v-app>
 </template>
 
 <script>
@@ -266,14 +284,16 @@ export default {
       this.campaign_id = window.Telegram.WebApp.initDataUnsafe.start_param
     }
     this.checkInitData({_auth: window.Telegram.WebApp.initData})
+    window.Telegram.WebApp.setBackgroundColor("#16142C")
+
+
     window.Telegram.WebApp.onEvent('backButtonClicked', () => {
       this.$router.push({ path: '/'});
     })
-
     window.Telegram.WebApp.BackButton.show()
   },
   unmounted() {
-    window.Telegram.WebApp.offEvent('mainButtonClicked')
+    window.Telegram.WebApp.MainButton.offClick()
     window.Telegram.WebApp.MainButton.hide()
     window.Telegram.WebApp.offEvent('backButtonClicked')
     window.Telegram.WebApp.BackButton.hide()
@@ -338,15 +358,18 @@ export default {
             this.page_loading = false
             if (response.data.not_done_tasks.length == 0) {
               this.setDoneCampaign()
+              window.Telegram.WebApp.MainButton.show()
+              window.Telegram.WebApp.MainButton.setText("You've completed the campaign.")
+              window.Telegram.WebApp.MainButton.setParams({color: "#4CAF50"})
             }
             // else {
-            //   // window.Telegram.WebApp.MainButton.show()
             //   window.Telegram.WebApp.MainButton.setText("Continue with tasks")
             //   let next_task = response.data.not_done_tasks[0]
-            //   window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
-            //
-            //     this.continueWithTasks(next_task)
+            //   window.Telegram.WebApp.MainButton.onClick((callback) => {
+            //     const
+            //     this.setDoneTask(next_task.group_id, next_task.id, next_task.type, next_task.story_id)
             //   })
+            //   window.Telegram.WebApp.MainButton.show()
             // }
           })
           .catch(error => {
@@ -355,8 +378,6 @@ export default {
     },
     changeLoading() {
       this.loading_btn = !this.loading_btn
-      // lscache.set("loading_btn", true, 1)
-      // setTimeout(this.changeLoading2, 10000);
     },
     setDoneTask(group_id, task_id, task_type, story_id = 0) {
       this.changeLoading()
@@ -379,8 +400,6 @@ export default {
     },
     openStory(story_id) {
       this.$router.push({ name: 'Story', query: {story_id: story_id, campaign_id: this.campaign_id}});
-
-      // this.setDoneTask(task_group_id, task_type, task_type)
     },
     copyLink() {
       this.hapticImpactOccurred('medium')

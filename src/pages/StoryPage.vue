@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     this.story_id = this.$route.query.story_id
-    this.getStories(this.story_id)
+    this.getStories(this.$route.query.story_id)
     window.Telegram.WebApp.onEvent('backButtonClicked', () => {
       this.$router.push({ name: "Campaign", query: {campaign_id: this.$route.query.campaign_id}});
     })

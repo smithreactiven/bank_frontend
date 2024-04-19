@@ -7,7 +7,7 @@
           <v-card-item>
             <v-row align="center">
               <v-col cols="auto">
-                <v-card class="px-2 py-2" color="grey-darken-4" rounded="lg">
+                <v-card class="px-2 py-2" color="#16142C" rounded="lg">
                   <v-img width="25px" height="25px" :src="temp.image">
                   </v-img>
                 </v-card>

@@ -1,21 +1,20 @@
 <template>
   <v-container>
-    <v-card color="black" rounded="lg" elevation="0">
+    <v-card color="#070B14" rounded="lg" elevation="0">
       <v-card-subtitle>
         Title
       </v-card-subtitle>
-      <v-sheet height="4px" color="black"></v-sheet>
-      <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
+      <v-sheet height="4px" color="#070B14"></v-sheet>
+      <v-card class="px-3 py-3" color="#16142C" rounded="lg">
         <v-text-field
             hide-details="true"
-            ref="task_title"
             density="compact"
             color="white"
             base-color="white"
             variant="outlined"
             rounded="lg"
             v-model="title"
-            @keyup.enter="hideMobileKeyboardTitle()"
+            @keyup.enter="hideKeyboard"
             :rules="[
                 () => !!title || 'This field is required.',
                 () => !!title && title.length <= 50 || 'No more than 50 characters.',
@@ -23,12 +22,12 @@
         </v-text-field>
       </v-card>
 
-      <v-sheet height="20px" color="black"></v-sheet>
+      <v-sheet height="20px" color="#070B14"></v-sheet>
 
       <v-card-subtitle>
         What this task about
       </v-card-subtitle>
-      <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
+      <v-card class="px-3 py-3" color="#16142C" rounded="lg">
         <v-text-field
             label="description"
             hide-details="true"
@@ -37,8 +36,7 @@
             base-color="white"
             variant="outlined"
             rounded="lg"
-            ref="task_desc"
-            @keyup.enter="hideMobileKeyboardDesc()"
+            @keyup.enter="hideKeyboard"
             v-model="desc"
             :rules="[
                 () => !!title || 'This field is required.',
@@ -47,13 +45,13 @@
         </v-text-field>
       </v-card>
 
-      <v-sheet height="20px" color="black"></v-sheet>
+      <v-sheet height="20px" color="#070B14"></v-sheet>
 
       <div v-if="task_types_1.includes(task_type)" >
         <v-card-subtitle>
           Link to visit
         </v-card-subtitle>
-        <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
+        <v-card class="px-3 py-3" color="#16142C" rounded="lg">
           <v-text-field
               label="https://"
               hide-details="true"
@@ -62,8 +60,7 @@
               base-color="white"
               variant="outlined"
               rounded="lg"
-              ref="task_url"
-              @keyup.enter="hideMobileKeyboardUrl()"
+              @keyup.enter="hideKeyboard"
               v-model="url"
               :rules="[
                 () => !!title || 'This field is required.',
@@ -76,7 +73,7 @@
         <v-card-subtitle>
           Stories
         </v-card-subtitle>
-        <v-card class="pt-3" color="grey-darken-4" rounded="lg">
+        <v-card class="pt-3" color="#16142C" rounded="lg">
           <v-card-item>
             <v-file-input
                 class="mt-3"
@@ -96,7 +93,7 @@
         <br>
         <v-row justify="center">
           <v-col cols="auto" v-for="i in uploads_stories" :key="i">
-            <v-card color="grey-darken-4" rounded="lg">
+            <v-card color="#16142C" rounded="lg">
               <v-card-item>
                 <v-img cover="true" class="rounded-lg" width="64px"  height="64px" :src="getFileURL(i)"></v-img>
               </v-card-item>
@@ -104,12 +101,12 @@
           </v-col>
         </v-row>
       </div>
-      <v-sheet height="20px" color="black"></v-sheet>
+      <v-sheet height="20px" color="#070B14"></v-sheet>
 
       <v-card-subtitle>
         Icon
       </v-card-subtitle>
-      <v-card class="px-3 py-3" color="grey-darken-4" rounded="lg">
+      <v-card class="px-3 py-3" color="#16142C" rounded="lg">
         <v-row align="center" justify="center" dense="true">
           <v-col cols="auto" v-for="i in emojies" :key="i">
             <v-card
@@ -128,7 +125,7 @@
                 v-else
                 variant="tonal"
                 @click="onSelectEmoji(i.id)"
-                color="black"
+                color="#070B14"
                 class="px-2 py-2"
                 rounded="lg"
                 elevation="0"
@@ -139,8 +136,31 @@
           </v-col>
         </v-row>
       </v-card>
+      <v-sheet height="20px" color="#070B14"></v-sheet>
+      <v-card-subtitle>
+        Or icon url (<a href="https://emojipedia.org/" target="_blank">https://emojipedia.org/</a>)
+      </v-card-subtitle>
+      <v-card class="px-3 py-3" color="#16142C" rounded="lg">
+        <v-row align="center" justify="center" dense="true">
+          <v-col cols="12">
+                <v-text-field
+                    v-model="custom_url"
+                    density="compact"
+                    color="white"
+                    base-color="white"
+                    label="Url"
+                    variant="outlined"
+                    rows="1"
+                    rounded="lg"
+                    >
+                </v-text-field>
+            <v-img v-if="custom_url" width="25px" height="25px" :src="custom_url">
+            </v-img>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-card>
-    <v-sheet height="20px" color="black"></v-sheet>
+    <v-sheet height="20px" color="#070B14"></v-sheet>
     <v-row justify="center">
       <v-col cols="8">
         <v-btn @click="addTask" class="text-none" rounded="lg" width="100%" variant="flat"
@@ -169,6 +189,7 @@ export default {
       task_types_1: ["subscribe", "open_link"],
       uploads_stories: [],
       selectedEmoji: 0,
+      custom_url: null,
       emojies: [
         {
           id: 0,
@@ -258,6 +279,11 @@ export default {
       // window.Telegram.WebApp.MainButton.hideProgress()
       // window.Telegram.WebApp.offEvent('mainButtonClicked')
       lscache.remove("story_id")
+      let icon = this.emojies[this.selectedEmoji].url
+      if (this.custom_url) {
+        icon = this.custom_url
+      }
+
       if (!this.task_id) {
         let new_task = {
           id: this.task_groups[this.group_id].tasks.length,
@@ -269,7 +295,7 @@ export default {
           desc: this.desc,
           url: this.url,
           story_id: this.story_id,
-          icon: this.emojies[this.selectedEmoji].url
+          icon: icon
         }
         this.task_groups[this.group_id].tasks.push(new_task)
       }
@@ -284,21 +310,16 @@ export default {
           desc: this.desc,
           url: this.url,
           story_id: this.story_id,
-          icon: this.emojies[this.selectedEmoji].url
+          icon: icon
         };
       }
 
       lscache.set("task_groups", this.task_groups)
       this.$router.push({ name: 'AddGroupTask'});
     },
-    hideMobileKeyboardTitle() {
-      this.$refs.task_title.blur();
-    },
-    hideMobileKeyboardDesc() {
-      this.$refs.task_desc.blur();
-    },
-    hideMobileKeyboardUrl() {
-      this.$refs.task_url.blur();
+    hideKeyboard(event) {
+      event.preventDefault();
+      event.target.blur();
     },
     onSelectEmoji(id) {
       this.selectedEmoji = id

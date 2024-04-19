@@ -5,20 +5,7 @@
       <v-img v-if="campaign_image" width="100%" height="200px" :cover="true"  :src="campaign_image">
       </v-img>
 
-<!--      <div v-if="reward_image_file">-->
-<!--        <v-img width="64px" height="64px" :cover="true"  :src="getFileURL(reward_image_file)">-->
-<!--        </v-img>-->
-<!--      </div>-->
-
-<!--      <div v-if="reward_image">-->
-
-<!--        {{reward_image.readAsDataURL()}}-->
-<!--&lt;!&ndash;        <v-img width="64px" height="64px" :cover="true"  :src="reward_image">&ndash;&gt;-->
-<!--&lt;!&ndash;        </v-img>&ndash;&gt;-->
-<!--      </div>-->
-
-      <br>
-      <br>
+      <v-sheet class="bg-transparent" height="20px" @click="hideKeyboard"></v-sheet>
       <v-file-input
           @change="uploadCampaignImage"
           :rules="upload_rules"
@@ -31,18 +18,17 @@
       >
       </v-file-input>
 
-    <v-card color="black" rounded="lg" elevation="0">
+    <v-card color="#070B14" rounded="lg" elevation="0">
       <v-card-subtitle>
         Title and description
 
       </v-card-subtitle>
-      <v-sheet height="4px" color="black"></v-sheet>
-      <v-card class="px-3 pt-3" color="grey-darken-4" rounded="lg">
+      <v-sheet height="4px" color="#070B14"></v-sheet>
+      <v-card class="px-3 pt-3" color="#16142C" rounded="lg">
         <v-text-field
-            ref="field_1"
             v-model="campaign.title"
             @change="saveCache()"
-            @keyup.enter="hideMobileKeyboard1()"
+            @keyup.enter="hideKeyboard"
             density="compact"
             color="white"
             base-color="white"
@@ -56,10 +42,9 @@
             ]">
         </v-text-field>
       </v-card>
-      <v-sheet height="10px" color="black"></v-sheet>
-      <v-card class="px-3 pt-3" color="grey-darken-4" rounded="lg">
+      <v-sheet height="10px" color="#070B14"></v-sheet>
+      <v-card class="px-3 pt-3" color="#16142C" rounded="lg">
         <v-textarea
-            ref="field_2"
             v-model="campaign.desc"
             @change="saveCache()"
             density="compact"
@@ -74,12 +59,12 @@
       </v-card>
     </v-card>
     <br>
-    <v-card color="black" rounded="lg" elevation="0">
+    <v-card color="#070B14" rounded="lg" elevation="0">
       <v-card-subtitle>
         Campaign settings
       </v-card-subtitle>
-      <v-sheet height="4px" color="black"></v-sheet>
-      <v-card color="grey-darken-4" rounded="lg">
+      <v-sheet height="4px" color="#070B14"></v-sheet>
+      <v-card color="#16142C" rounded="lg">
         <v-row align="start" class="px-3">
             <v-card-item class="align-self-center">
               One by one access
@@ -109,8 +94,8 @@
 <!--              </v-col>-->
 
 <!--            </v-row>-->
-        <v-expansion-panels color="black">
-          <v-expansion-panel color="black" bg-color="grey-darken-4" elevation="0">
+        <v-expansion-panels color="#070B14">
+          <v-expansion-panel color="#070B14" bg-color="#16142C" elevation="0">
             <v-expansion-panel-title>
               <template v-slot:default>
                 <v-row no-gutters>
@@ -132,9 +117,8 @@
               <v-row no-gutters align="center" class="pt-3" >
                 <v-col cols="6">
                   <v-text-field
-                      @keyup.enter="hideMobileKeyboardFinishDate"
+                      @keyup.enter="hideKeyboard"
                       @keyup.delete="clearFinishDate"
-                      ref="finish_date_ref"
                       v-model="finish_date"
                       :rules="finish_date_rules"
                       label="Date"
@@ -147,9 +131,8 @@
                 <v-spacer></v-spacer>
                 <v-col cols="5">
                   <v-text-field
-                      @keyup.enter="hideMobileKeyboardFinishTime"
+                      @keyup.enter="hideKeyboard"
                       @keyup.delete="clearFinishTime"
-                      ref="finish_time_ref"
                       v-model="finish_time"
                       :rules="finish_time_rules"
                       label="Time"
@@ -183,7 +166,7 @@
       </v-card>
     </v-card>
     <br>
-<!--    <v-card @click="redirectToAddGroupTask" rounded="lg" color="grey-darken-4">-->
+<!--    <v-card @click="redirectToAddGroupTask" rounded="lg" color="#16142C">-->
 <!--        <v-card-item class="height-60">-->
 <!--          <v-row align="center">-->
 <!--            <v-col cols="auto">-->
@@ -207,7 +190,7 @@
 <!--        </v-card-item>-->
 <!--      </v-card>-->
 <!--      <br>-->
-<!--      <v-card @click="redirectToRewards" rounded="lg" variant="flat" color="grey-darken-4">-->
+<!--      <v-card @click="redirectToRewards" rounded="lg" variant="flat" color="#16142C">-->
 <!--        <v-card-item class="height-60">-->
 <!--          <v-row align="center">-->
 <!--            <v-col v-if="reward_image" cols="auto">-->
@@ -371,23 +354,12 @@
       saveCache() {
         lscache.set('campaign', this.campaign)
       },
-      hideMobileKeyboard1() {
-        this.$refs.field_1.blur();
-      },
-      hideMobileKeyboardFinishDate() {
-        this.$refs.finish_date_ref.blur();
-      },
-      hideMobileKeyboardFinishTime() {
-        this.$refs.finish_time_ref.blur();
+      hideKeyboard(event) {
+        event.preventDefault();
+        event.target.blur();
       },
       hapticImpactOccurred(style) {
         window.Telegram.WebApp.HapticFeedback.impactOccurred(style);
-      },
-      redirectToRewards() {
-        this.$router.push({name: 'AddReward', query: {campaign_id: this.campaign.id}});
-      },
-      redirectToAddGroupTask() {
-        this.$router.push({name: 'AddGroupTask',});
       },
       createCampaign() {
         if (!this.campaign_image) {

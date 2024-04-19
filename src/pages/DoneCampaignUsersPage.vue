@@ -1,5 +1,5 @@
 <template>
-  <v-card color="black" class="text-center">
+  <v-card color="#070B14" class="text-center">
     <v-card-title>
       List of done users
     </v-card-title>

@@ -25,9 +25,10 @@ export default {
 html, body {
   font-family: 'SF Pro Display', sans-serif !important;
   color: white;
-  background-color: black;
-  touch-action: manipulation;
+  background-color: #070B14;
+  touch-action: manipulation !important;
 }
+
 
 .tg-button-text-color {
   color: var(--tg-theme-button-text-color)

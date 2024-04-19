@@ -6,12 +6,12 @@
 <!--          Upload an icon reward-->
 <!--        </v-btn>-->
 <!--      </v-card>-->
-    <v-card color="black" rounded="lg" elevation="0">
+    <v-card color="#070B14" rounded="lg" elevation="0">
         <v-card-subtitle>
           Reward Amount
         </v-card-subtitle>
         <v-container>
-          <v-text-field ref="field_2" @keyup.enter="hideMobileKeyboard1()" density="compact" rounded="lg" label="Amount" variant="outlined" class="" rows="1" v-model="amount" :rules="[
+          <v-text-field @keyup.enter="hideKeyboard" density="compact" rounded="lg" label="Amount" variant="outlined" class="" rows="1" v-model="amount" :rules="[
             () => !!amount || 'Reward field is required.',
             () => !!amount && amount.length <= 100 || 'No more than 100 characters.',
             ]">
@@ -26,7 +26,7 @@
           <v-card-subtitle>
             Icon 36x36px
           </v-card-subtitle>
-          <v-sheet height="4px" color="black"></v-sheet>
+          <v-sheet height="4px" color="#070B14"></v-sheet>
           <v-file-input
               variant="outlined"
               @change="onUploadImage"
@@ -100,8 +100,9 @@ export default {
     window.Telegram.WebApp.offEvent('backButtonClicked')
   },
   methods: {
-    hideMobileKeyboard1() {
-      this.$refs.field_1.blur()
+    hideKeyboard(event) {
+      event.preventDefault();
+      event.target.blur();
     },
     setReward() {
       if (!this.amount) {
