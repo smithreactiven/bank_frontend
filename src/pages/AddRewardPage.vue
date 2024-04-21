@@ -111,6 +111,8 @@ export default {
       if (this.upload_images) {
         lscache.set("reward_image", `/api/static/uploads/reward_media_${this.campaign_id}.jpg`)
         this.uploadRewardImage()
+        lscache.set("reward_amount", this.amount)
+        lscache.set("reward_currency", this.currency)
         this.$router.push({ name: 'AddCampaign'});
       }
       else {

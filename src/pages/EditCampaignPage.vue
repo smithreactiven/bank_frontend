@@ -426,7 +426,7 @@
               .then(() => {
                 this.upload_images = null
                 this.campaign_image = null
-                setTimeout(this.changeImage, 1000)
+                setTimeout(this.changeImage, 3000)
 
               })
               .catch(error => {
