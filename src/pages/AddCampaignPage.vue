@@ -411,7 +411,7 @@
         axios.get('api/getRandomHash', )
             .then(response => {
               this.campaign.id = response.data.data
-              this.campaign.url = `https://t.me/JourneysBuilderBot/campaign?startapp=${response.data.data}`
+              this.campaign.url = `https://t.me/RaiseAnon_bot/campaign?startapp=${response.data.data}`
               this.saveCache()
             })
             .catch(error => {
