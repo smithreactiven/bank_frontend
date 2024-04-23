@@ -32,11 +32,12 @@
   <div v-else>
   <v-container  @click="redirectToCampaignPage(campaign.id)" v-for="campaign in campaigns" :key="campaign">
     <v-card elevation="0" color="#16142C" rounded="lg">
-      <v-img cover="true" :src=campaign.image height="200px" rounded="lg">
+
+      <v-img cover="true" :src=campaign.image height="200px" rounded="lg" >
         <v-row v-if="campaign.time_left == 0" dense="true" class="time-left">
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-chip color="white" variant="tonal" size="large">
+            <v-chip color="white" variant="flat" size="large">
               finished
             </v-chip>
           </v-col>
@@ -44,7 +45,7 @@
         <v-row v-else-if="campaign.time_left >= 999" dense="true" class="time-left">
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-chip color="white" variant="tonal" size="large">
+            <v-chip color="white" variant="flat" size="large">
               active
             </v-chip>
           </v-col>
@@ -52,7 +53,7 @@
         <v-row v-else dense="true" class="time-left">
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-chip  color="white" variant="tonal"  size="large">
+            <v-chip color="white" variant="flat" size="large">
               {{ campaign.time_left }} {{ campaign.time_unit }} left
             </v-chip>
           </v-col>
@@ -90,6 +91,7 @@ export default {
   name: "HomePage",
   components: {VSkeletonLoader},
   data: () => ({
+    tg_platform: null,
     user_id: null,
     page_loading: true,
     admins: [],
@@ -120,6 +122,8 @@ export default {
   mounted() {
     window.Telegram.WebApp.setBackgroundColor("#16142C")
     window.Telegram.WebApp.BackButton.hide()
+    window.Telegram.WebApp.MainButton.hide()
+    this.tg_platform = window.Telegram.WebApp.platform
     this.checkInitData({_auth: window.Telegram.WebApp.initData})
     this.getCampaigns()
     this.getAdmins()
@@ -162,6 +166,9 @@ export default {
     redirectToCampaignPage(campaign_id) {
       this.$router.push({ name: 'Campaign', query: {campaign_id: campaign_id, }});
     },
+    shareWithFriend() {
+
+    }
   }
 }
 

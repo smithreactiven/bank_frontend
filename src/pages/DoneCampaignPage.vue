@@ -6,29 +6,29 @@
         <v-img cl height="128px" width="128px" :cover="true" class="mx-auto rounded-lg" :src="campaign.reward_image"></v-img>
       </v-card-item>
       <v-card-title style="white-space: pre-line !important">
-        Congratulations you have completed the campaign!
+        Thank you! Your airdrop will arrive during the launch period.
       </v-card-title>
       <v-card-subtitle v-if="campaign">
         Your reward: {{ campaign.reward_amount }} {{ campaign.reward_currency }}
       </v-card-subtitle>
       <br>
       <br>
-      <v-card-item>
-        <v-btn @click="redirectToCampaign()" class="text-none" rounded="lg" width="60%" variant="flat"
-               color="var(--tg-theme-button-color)">
-<!--          <template v-slot:prepend>-->
-<!--              <v-icon-->
-<!--                  color="var(&#45;&#45;tg-theme-button-text-color)"-->
-<!--                  icon="mdi-chevron-left"-->
-<!--              ></v-icon>-->
+<!--      <v-card-item>-->
+<!--        <v-btn @click="redirectToCampaign()" class="text-none" rounded="lg" width="60%" variant="flat"-->
+<!--               color="var(&#45;&#45;tg-theme-button-color)">-->
+<!--&lt;!&ndash;          <template v-slot:prepend>&ndash;&gt;-->
+<!--&lt;!&ndash;              <v-icon&ndash;&gt;-->
+<!--&lt;!&ndash;                  color="var(&#45;&#45;tg-theme-button-text-color)"&ndash;&gt;-->
+<!--&lt;!&ndash;                  icon="mdi-chevron-left"&ndash;&gt;-->
+<!--&lt;!&ndash;              ></v-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          </template>&ndash;&gt;-->
+<!--          <template v-slot:default>-->
+<!--            <label class="tg-button-text-color">-->
+<!--              Back-->
+<!--            </label>-->
 <!--          </template>-->
-          <template v-slot:default>
-            <label class="tg-button-text-color">
-              Back
-            </label>
-          </template>
-        </v-btn>
-      </v-card-item>
+<!--        </v-btn>-->
+<!--      </v-card-item>-->
     </v-card>
   </v-container>
 </template>
@@ -51,8 +51,16 @@ export default {
       this.$router.push({ path: '/'});
     })
     window.Telegram.WebApp.BackButton.show()
+    window.Telegram.WebApp.MainButton.show()
+    window.Telegram.WebApp.MainButton.setText("Join the community")
+    window.Telegram.WebApp.MainButton.setParams({color: "#4CAF50"})
+    window.Telegram.WebApp.MainButton.onClick(() => {
+      window.Telegram.WebApp.openTelegramLink(`https://t.me/RaiseAnon`)
+    })
   },
   unmounted() {
+    window.Telegram.WebApp.MainButton.offClick()
+    window.Telegram.WebApp.MainButton.hide()
     window.Telegram.WebApp.BackButton.hide()
     window.Telegram.WebApp.offEvent('backButtonClicked')
   },

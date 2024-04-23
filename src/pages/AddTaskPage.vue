@@ -69,7 +69,7 @@
           </v-text-field>
         </v-card>
       </div>
-      <div v-else>
+      <div v-if="task_types_2.includes(task_type)">
         <v-card-subtitle>
           Stories
         </v-card-subtitle>
@@ -187,6 +187,7 @@ export default {
   data () {
     return {
       task_types_1: ["subscribe", "open_link"],
+      task_types_2: ["view_story", ],
       uploads_stories: [],
       selectedEmoji: 0,
       custom_url: null,

@@ -41,19 +41,26 @@ export default {
           title: "Subscribe Telegram",
           type: "subscribe",
           image: "https://em-content.zobj.net/source/apple/391/megaphone_1f4e3.png",
-          url: "",
         },
         {
           title: "Open Link",
           type: "open_link",
           image: "https://em-content.zobj.net/source/apple/391/link_1f517.png",
-          url: "",
         },
         {
           title: "View Story",
           type: "view_story",
           image: "https://em-content.zobj.net/source/apple/391/eyes_1f440.png",
-          url: "",
+        },
+        {
+          title: "Add Wallet",
+          type: "add_wallet",
+          image: "https://em-content.zobj.net/source/apple/391/purse_1f45b.png",
+        },
+        {
+          title: "Invite Friend",
+          type: "invite_friend",
+          image: "https://em-content.zobj.net/source/apple/391/man-raising-hand_1f64b-200d-2642-fe0f.png",
         },
       ]
     }

@@ -2,6 +2,7 @@
   <v-app class="bg-transparent">
   <v-container>
 
+
     <div v-if="page_loading">
       <v-skeleton-loader size="x-large" color="#16142C" class="rounded-lg" type="image"></v-skeleton-loader>
     </div>
@@ -101,15 +102,15 @@
     </div>
     <div v-else>
       <div v-for="task_group in task_groups" :key="task_group">
-        <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
+        <v-sheet @click="this.hideKeyboard" class="bg-transparent" height="10px" elevation="0"></v-sheet>
         <v-card elevation="0" color="#070B14">
           <v-card-item>
-            <v-card-title class="text-pre-line">
+            <v-card-title @click="this.hideKeyboard" class="text-pre-line">
               {{ task_group.title }}
             </v-card-title>
             <div v-for="task in task_group.tasks" :key="task">
               <v-sheet class="bg-transparent" height="10px" elevation="0"></v-sheet>
-                <a v-if="!task.is_blocked && !campaign.time_left == 0 && !task.is_done" :href="task.url" target="_blank" class="text-decoration-none">
+                <a v-if="!task.is_blocked && !campaign.time_left == 0 && !task.is_done && task.type != 'add_wallet'" :href="task.url" target="_blank" class="text-decoration-none">
                   <v-card
                       elevation="0"
                       @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
@@ -140,16 +141,82 @@
                           </v-card-subtitle>
                         </v-col>
                         <v-spacer></v-spacer>
-                        <!--                  <v-col cols="auto">-->
-                        <!--                    <v-chip>{{ task.points }}</v-chip>-->
-                        <!--                  </v-col>-->
                       </v-row>
                     </v-card-item>
                   </v-card>
                 </a>
+                <div v-else-if="!task.is_blocked && !campaign.time_left == 0 && !task.is_done">
+                  <v-card
+                      elevation="0"
+                      color="deep-purple-accent-1"
+                      rounded="lg"
+                      variant="tonal"
+                      class="rounded-b-0"
+                  >
+                    <v-card-item @click="this.hideKeyboard">
+                      <v-row align="center">
+                        <v-col cols="auto">
+                          <v-btn v-if="task.is_loading" size="small" icon="mdi-account-circle" color="#16142C" loading="true" rounded="lg">
+                          </v-btn>
+                          <v-card elevation="0" v-else class="px-2 py-2" color="#16142C" rounded="lg">
+                            <v-icon v-if="task.is_done" color="green" width="25px" height="25px">
+                              mdi-check
+                            </v-icon>
+                            <v-icon v-else-if="task.is_blocked" width="25px" height="25px">
+                              mdi-lock
+                            </v-icon>
+                            <v-img v-else width="25px" height="25px" :src="task.icon">
+                            </v-img>
+                          </v-card>
+                        </v-col>
+                        <v-col cols="6" class="text-white">
+                          {{ task.title }}
+                          <v-card-subtitle class="text-white">
+                            {{ task.desc }}
+                          </v-card-subtitle>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                      </v-row>
+
+                    </v-card-item>
+                  </v-card>
+                  <v-card
+                      class="rounded-t-0"
+                      elevation="0"
+                      color="deep-purple-accent-1"
+                      rounded="lg"
+                      variant="tonal"
+                  >
+                    <v-card-item>
+                      <v-text-field
+                          @click="isKeyboardVisible=true"
+                          :label="user_wallet_label"
+                          @keyup.enter="this.hideKeyboard"
+                          v-model="user_wallet"
+                          rounded="lg"
+                          color="black"
+                          density="compact"
+                          bg-color="white"
+                          base-color="black"
+                          variant="solo"
+                          clearable
+                          single-line
+                          hide-details
+                      ></v-text-field>
+                    </v-card-item>
+                  </v-card>
+                  <v-btn
+                      v-if="show_save_wallet_btn"
+                      @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
+                      class="mt-2" rounded="lg" width="100%" variant="tonal" color="deep-purple-accent-1"
+                  >
+                    Save
+                  </v-btn>
+                  <v-sheet v-if="isKeyboardVisible && isMobile()" class="bg-transparent" height="300px"></v-sheet>
+                </div>
                 <v-card
-                    elevation="0"
                     v-else
+                    elevation="0"
                     @click="setDoneTask(task_group.id, task.id, task.type, task.story_id)"
                     color="#16142C"
                     rounded="lg"
@@ -191,7 +258,6 @@
         :timeout="snackbar_timeout"
         color="success"
         variant="flat"
-
     >
       <v-icon size="small">mdi-content-copy</v-icon>
       Link copied successfully!
@@ -228,8 +294,12 @@ export default {
           "https://em-content.zobj.net/source/apple/391/love-letter_1f48c.png"
       ],
       page_loading: true,
+      isKeyboardVisible: false,
+      user_wallet_label: "QA_n9oI...",
+      show_save_wallet_btn: true,
       campaign_id: null,
       loading_btn: false,
+      user_wallet: null,
       is_task_disabled: false,
       dones_tasks_groups: [],
       user_id: null,
@@ -304,11 +374,23 @@ export default {
     }
   },
   methods: {
+    isMobile() {
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true
+      } else {
+        return false
+      }
+    },
     redirectToDoneCampaign() {
       this.$router.push({ name: 'DoneCampaign', query: {campaign_id: this.campaign_id}});
     },
+    hideKeyboard(event) {
+      event.preventDefault();
+      event.target.blur();
+      this.isKeyboardVisible = false
+    },
     checkInitData(data) {
-      axios.post('api/checkInitData ', data)
+      axios.post('api/checkInitData', data)
           .then(response => {
             this.user_id = response.data.user.id
             this.username = response.data.user.username
@@ -359,8 +441,11 @@ export default {
             if (response.data.not_done_tasks.length == 0) {
               this.setDoneCampaign()
               window.Telegram.WebApp.MainButton.show()
-              window.Telegram.WebApp.MainButton.setText("You've completed the campaign.")
+              window.Telegram.WebApp.MainButton.setText("Join the community")
               window.Telegram.WebApp.MainButton.setParams({color: "#4CAF50"})
+                window.Telegram.WebApp.MainButton.onClick(() => {
+                  window.Telegram.WebApp.openTelegramLink(`https://t.me/RaiseAnon`)
+                })
             }
             // else {
             //   window.Telegram.WebApp.MainButton.setText("Continue with tasks")
@@ -379,10 +464,19 @@ export default {
     changeLoading() {
       this.loading_btn = !this.loading_btn
     },
+    setUserWallet() {
+      axios.post('api/setUserWallet', {
+        user_id: this.user_id, campaign_id: this.campaign_id, wallet: this.user_wallet
+      }).then(() => {
+
+      }).catch(error => {
+        console.error(error);
+      });
+    },
     setDoneTask(group_id, task_id, task_type, story_id = 0) {
-      this.changeLoading()
-      this.task_groups[group_id].tasks[task_id].is_loading = true
       if (["subscribe", "open_link"].includes(task_type)) {
+        this.changeLoading()
+        this.task_groups[group_id].tasks[task_id].is_loading = true
         axios.post('api/setDoneTask', {
           user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
         }).then(() => {
@@ -391,7 +485,40 @@ export default {
           console.error(error);
         });
       }
-      else {
+      else if (task_type == "add_wallet") {
+        if (this.user_wallet) {
+          this.changeLoading()
+          this.task_groups[group_id].tasks[task_id].is_loading = true
+          this.show_save_wallet_btn = false
+          axios.post('api/setDoneTask', {
+            user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
+          }).then(() => {
+            setTimeout(this.getCampaign2,3000)
+          }).catch(error => {
+            console.error(error);
+          });
+          this.setUserWallet()
+        }
+        else {
+          window.Telegram.WebApp.showAlert("Set wallet address")
+        }
+      }
+      else if (["invite_friend"].includes(task_type)) {
+        this.changeLoading()
+        this.task_groups[group_id].tasks[task_id].is_loading = true
+
+        window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${this.campaign.url}`)
+        axios.post('api/setDoneTask', {
+          user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
+        }).then(() => {
+          setTimeout(this.getCampaign2,10000)
+        }).catch(error => {
+          console.error(error);
+        });
+      }
+      else if (task_type == "view_story") {
+        this.changeLoading()
+        this.task_groups[group_id].tasks[task_id].is_loading = true
         axios.post('api/setDoneTask', {
           user_id: this.user_id, campaign_id: this.campaign_id, group_id: group_id, task_id: task_id
         })
