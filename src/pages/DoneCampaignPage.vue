@@ -9,7 +9,7 @@
         Thank you! Your airdrop will arrive during the launch period.
       </v-card-title>
       <v-card-subtitle v-if="campaign">
-        Your reward: {{ campaign.reward_amount }} {{ campaign.reward_currency }}
+        Your reward: <div v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</div> {{ campaign.reward_currency }}
       </v-card-subtitle>
       <br>
       <br>

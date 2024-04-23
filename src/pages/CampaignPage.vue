@@ -62,7 +62,7 @@
         <v-row align="center">
           <v-col cols="auto">
             <v-card-item>
-              <b>{{ campaign.reward_amount }} {{ campaign.reward_currency }}</b>
+              <b><div v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</div> {{ campaign.reward_currency }}</b>
               <v-card-subtitle>
                 Rewards
               </v-card-subtitle>
