@@ -72,7 +72,7 @@
               <v-chip size="large">
                 <v-img v-if="campaign.reward_image" cover="true" :src=campaign.reward_image width="24" height="24" class="rounded-lg">
                 </v-img>
-                <div class="pl-2" ><div v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</div> {{ campaign.reward_currency }}</div>
+                <div class="pl-2" ><label v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</label> {{ campaign.reward_currency }}</div>
               </v-chip>
           </v-col>
         </v-row>
@@ -166,9 +166,6 @@ export default {
     redirectToCampaignPage(campaign_id) {
       this.$router.push({ name: 'Campaign', query: {campaign_id: campaign_id, }});
     },
-    shareWithFriend() {
-
-    }
   }
 }
 

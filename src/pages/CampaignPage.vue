@@ -62,7 +62,7 @@
         <v-row align="center">
           <v-col cols="auto">
             <v-card-item>
-              <b><div v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</div> {{ campaign.reward_currency }}</b>
+              <b><label v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</label> {{ campaign.reward_currency }}</b>
               <v-card-subtitle>
                 Rewards
               </v-card-subtitle>
@@ -444,7 +444,7 @@ export default {
               window.Telegram.WebApp.MainButton.setText("Join the community")
               window.Telegram.WebApp.MainButton.setParams({color: "#4CAF50"})
                 window.Telegram.WebApp.MainButton.onClick(() => {
-                  window.Telegram.WebApp.openTelegramLink(`https://t.me/RaiseAnon`)
+                  window.Telegram.WebApp.openTelegramLink(`https://t.me/raiseanon_chat`)
                 })
             }
             // else {

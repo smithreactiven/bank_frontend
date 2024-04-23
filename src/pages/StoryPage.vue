@@ -45,25 +45,19 @@ export default {
     window.Telegram.WebApp.BackButton.hide()
   },
   methods: {
-    // getCampaignHash() {
-    //   axios.get('api/getRandomHash', )
-    //       .then(response => {
-    //         this.story_id = response.data.data
-    //         lscache.set("story_id", this.story_id)
-    //       })
-    //       .catch(error => {
-    //         console.error(error);
-    //       });
-    // },
+    redirectToCampaignPage() {
+      this.$router.push({ name: 'Campaign', query: {campaign_id: this.$route.query.campaign_id, }});
+    },
     getStories(story_id) {
       axios.post('api/getStories', {
         story_id: story_id
       }).then(response => {
         this.stories = response.data.stories
+        setTimeout(this.redirectToCampaignPage, this.stories.length * 3000)
       })
-          .catch(error => {
-            console.error(error);
-          });
+        .catch(error => {
+          console.error(error);
+        });
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <br>
-    <v-card color="#070B14" class="text-center">
+    <v-card variant="flat" color="#070B14" class="text-center">
       <v-card-item v-if="campaign">
         <v-img cl height="128px" width="128px" :cover="true" class="mx-auto rounded-lg" :src="campaign.reward_image"></v-img>
       </v-card-item>
@@ -9,7 +9,7 @@
         Thank you! Your airdrop will arrive during the launch period.
       </v-card-title>
       <v-card-subtitle v-if="campaign">
-        Your reward: <div v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</div> {{ campaign.reward_currency }}
+        Your reward: <label v-if="campaign.reward_amount > 0">{{ campaign.reward_amount }}</label> {{ campaign.reward_currency }}
       </v-card-subtitle>
       <br>
       <br>
@@ -55,7 +55,7 @@ export default {
     window.Telegram.WebApp.MainButton.setText("Join the community")
     window.Telegram.WebApp.MainButton.setParams({color: "#4CAF50"})
     window.Telegram.WebApp.MainButton.onClick(() => {
-      window.Telegram.WebApp.openTelegramLink(`https://t.me/RaiseAnon`)
+      window.Telegram.WebApp.openTelegramLink(`https://t.me/raiseanon_chat`)
     })
   },
   unmounted() {
