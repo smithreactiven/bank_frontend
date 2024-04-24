@@ -136,7 +136,7 @@
                         </v-col>
                         <v-col cols="6" class="text-white">
                           {{ task.title }}
-                          <v-card-subtitle class="text-white">
+                          <v-card-subtitle class="pre-line text-white">
                             {{ task.desc }}
                           </v-card-subtitle>
                         </v-col>
@@ -171,7 +171,7 @@
                         </v-col>
                         <v-col cols="6" class="text-white">
                           {{ task.title }}
-                          <v-card-subtitle class="text-white">
+                          <v-card-subtitle class="pre-line text-white">
                             {{ task.desc }}
                           </v-card-subtitle>
                         </v-col>
