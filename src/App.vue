@@ -25,7 +25,7 @@ export default {
 html, body {
   font-family: 'SF Pro Display', sans-serif !important;
   color: white;
-  background-color: #070B14;
+  background-color: #000000;
   touch-action: manipulation !important;
 }
 

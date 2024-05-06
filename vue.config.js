@@ -6,10 +6,10 @@ module.exports = defineConfig({
     client: {
       overlay: false,
     },
-    https: false,
+    https: true,
     proxy: {
       "/api" : {
-        target: "http://localhost:5001",
+        target: "http://localhost:8081",
         ws: true,
         changeOrigin: true
       },
