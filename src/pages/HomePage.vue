@@ -142,9 +142,17 @@
 
     <v-row>
       <v-col cols="12">
-        <v-card class="account" v-for="item in items" :key="item.name" height="100" width="350" rounded="xl">
+        <v-card
+            class="account"
+            v-for="item in items"
+            :key="item.name"
+            height="100"
+            width="350"
+            rounded="xl"
+            v-model="balance"
+        >
           <v-card-text style="font-size: 18px; color: white;">
-            {{item.balance}} ₽
+            {{balance}} ₽
           </v-card-text>
           <label class="ml-4" style="color: white"> Bank account </label>
         </v-card>
@@ -171,12 +179,20 @@
               density="compact"
               color="black"
               :rules="[
-        () => !!item || 'Это поле обязательное!',
-        () => !!item.replenishment && item.length > 7 || 'Не больше 7-значной суммы',
-      ]">
-            {{item.replenishment}}
+              () => !!item.replenishment || 'Это поле обязательное!',
+              () => !!item.replenishment && item.length > 7 || 'Не больше 7-значной суммы',
+              ]"
+              v-model="replenishment"
+          >
+
           </v-text-field>
-          <v-btn variant="tonal" style="font-size: 11px" rounded="xl" color="yellow" @click="topUpBalanceToServer()">
+          <v-btn
+              variant="tonal"
+              style="font-size: 11px"
+              rounded="xl"
+              color="yellow"
+              @click="topUpBalanceToServer(replenishment)"
+          >
             Подтвердить
           </v-btn>
         </v-card>
@@ -201,11 +217,12 @@ export default {
       TopUpBalance: false,
       isDialogVisible: false,
       timeout: 1000,
+      replenishment: null,
+      user_id: null,
+      balance: 0,
       items: [{
         name: 'Vadim',
-        balance: 355,
         spending: 123,
-        replenishment: null,
         alert: false,
       }]
     }),
@@ -213,25 +230,45 @@ export default {
     window.Telegram.WebApp.setBackgroundColor("#000000")
     window.Telegram.WebApp.BackButton.hide()
     window.Telegram.WebApp.MainButton.hide()
+    this.checkInitData({_auth: window.Telegram.WebApp.initData})
   },
   methods: {
     checkInitData(data) {
       axios.post('api/checkInitData', data)
           .then(response => {
-            this.user_id = response.data.user.id
+            this.user_id = response.data.user.id;
+            this.viewBalance(response.data.user.id)
           })
           .catch(error => {
             console.error(error);
           });
     },
-    topUpBalanceToServer() {
-      this.isDialogVisible = true;
-      setTimeout(() => {
-        this.isDialogVisible = false;
-      }, this.timeout);
-    }
-  }
+      topUpBalanceToServer(replenishment) {
+        axios.post('api/topUpBalance', { replenishment, user_id: this.user_id})
+          .then(response => {
+            this.balance = response.data.balance;
+            this.user_id = response.data.user_id
+          })
+          .catch(error => {
+            console.error(error);
+          });
+        this.isDialogVisible = true;
+        setTimeout(() => {
+          this.isDialogVisible = false;
+        }, this.timeout);
+    },
+      viewBalance() {
+        axios.post('api/viewBalance', {user_id: this.user_id})
+            .then(response => {
+              this.balance = response.data.balance
+            })
+            .catch(error => {
+            console.error(error);
+          });
+         }
+        }
 }
+
 </script>
 
 <style scoped>
