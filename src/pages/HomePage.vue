@@ -1,62 +1,4 @@
 <template>
-  <div style="width: 150px" class="d-flex overflow-x-auto">
-                <v-card class="pt-5 overflow-x-auto" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="blue">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto " elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="purple">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto " elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto bg-purple-lighten-5" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto bg-purple-lighten-5" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto bg-purple-lighten-5" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-                <v-card class="pt-5 overflow-x-auto bg-purple-lighten-5" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="500px" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-            </div>
   <v-container>
     <v-row>
       <v-col cols="6">
@@ -65,7 +7,7 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-btn rounded="xl" color="#6c5ce7" prepend-icon="mdi-check-circle">
+        <v-btn rounded="xl" color="#6c5ce7" prepend-icon="mdi-check-circle" @click="redirectToBonusPage()">
           <div class="font-weight-bold text-white" style="font-size: 10px;">
             Бонус за друга
           </div>
@@ -73,56 +15,19 @@
       </v-col>
     </v-row>
     <v-container>
-      <v-row>
-        <v-col cols="12">
-          <div class="overflow-auto" style="width: 100%">
-            <v-row>
-              <v-col cols="3">
-                <v-card class="pt-5" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="100" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Траты в ресторанах
-                    </label>
-                  </v-card-text>
-                </v-card>
-              </v-col>
 
-              <v-col cols="3">
-                <v-card class="pt-5 ml-6" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="100" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      На что потратить
-                    </label>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-
-              <v-col cols="3">
-                <v-card class="pt-5 ml-12" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="100" width="100" color="white">
-                  <v-card-text class="bg-transparent text-center py-0 px-0">
-                    <label class="theme-label-hint-color" style="font-size: 12px">
-                      Как
-                      <br> сэкономить деньги
-                    </label>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </div>
-        </v-col>
-      </v-row>
     </v-container>
 
     <v-row>
       <v-col cols="6">
-        <v-card class="pt-5 spending" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="130" width="160" color="white">
+        <v-card class="pt-5 spending" elevation="0" @click="redirectToSpendingPage()" style="z-index: 1" variant="tonal" rounded="xl" height="130" width="160" color="white">
           <v-card-text class="bg-transparent text-center py-0 px-0" v-for="item in items" :key="item.name">
             <label class="theme-label-hint-color" style="font-size: 16px">
               Все операции
               <br>
             </label>
-            <label class="theme-label-hint-color" style="font-size: 10px">
-              Трат в мае: {{item.spending}} ₽
+            <label style="font-size: 10px">
+              Траты за все время: {{item.spending}} ₽
             </label>
           </v-card-text>
         </v-card>
@@ -131,7 +36,7 @@
       <v-col cols="6">
         <v-card class="pt-5 ton" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="130" width="160" color="white">
           <v-card-text class="bg-transparent text-center py-0 px-0">
-            <label class="theme-label-hint-color" style="font-size: 16px">
+            <label style="font-size: 16px">
               Посмотреть
               <br> Ton
             </label>
@@ -174,17 +79,18 @@
       <v-col cols="12">
         <v-card color="black" class="mt-5" v-for="item in items" :key="item.name">
           <v-text-field
-              label="Введите сумму: ₽"
-              variant="solo-filled"
-              density="compact"
-              color="black"
-              :rules="[
-              () => !!item.replenishment || 'Это поле обязательное!',
-              () => !!item.replenishment && item.length > 7 || 'Не больше 7-значной суммы',
-              ]"
-              v-model="replenishment"
+            label="Введите сумму: ₽"
+            variant="solo-filled"
+            density="compact"
+            color="black"
+            :rules="[
+              () =>!!replenishment || 'Это поле обязательное!',
+              () => /^\d{1,7}$/.test(replenishment) || 'Введите сумму от 1 до 7 цифр',
+            ]"
+            v-model="replenishment"
+            type="number"
+            pattern="[09]*"
           >
-
           </v-text-field>
           <v-btn
               variant="tonal"
@@ -211,21 +117,20 @@ import axios from "axios";
 
 export default {
   name: "HomePage",
-  components: {
-  },
-    data: () => ({
-      TopUpBalance: false,
-      isDialogVisible: false,
-      timeout: 1000,
-      replenishment: null,
-      user_id: null,
-      balance: 0,
-      items: [{
-        name: 'Vadim',
-        spending: 123,
-        alert: false,
-      }]
-    }),
+  components: {},
+  data: () => ({
+    TopUpBalance: false,
+    isDialogVisible: false,
+    timeout: 1000,
+    replenishment: null,
+    user_id: null,
+    balance: null,
+    items: [{
+      name: 'Vadim',
+      spending: 123,
+      alert: false,
+    }]
+  }),
   mounted() {
     window.Telegram.WebApp.setBackgroundColor("#000000")
     window.Telegram.WebApp.BackButton.hide()
@@ -243,8 +148,8 @@ export default {
             console.error(error);
           });
     },
-      topUpBalanceToServer(replenishment) {
-        axios.post('api/topUpBalance', { replenishment, user_id: this.user_id})
+    topUpBalanceToServer(replenishment) {
+      axios.post('api/topUpBalance', {replenishment, user_id: this.user_id})
           .then(response => {
             this.balance = response.data.balance;
             this.user_id = response.data.user_id
@@ -252,21 +157,27 @@ export default {
           .catch(error => {
             console.error(error);
           });
-        this.isDialogVisible = true;
-        setTimeout(() => {
-          this.isDialogVisible = false;
-        }, this.timeout);
+      this.isDialogVisible = true;
+      setTimeout(() => {
+        this.isDialogVisible = false;
+      }, this.timeout);
     },
-      viewBalance() {
-        axios.post('api/viewBalance', {user_id: this.user_id})
-            .then(response => {
-              this.balance = response.data.balance
-            })
-            .catch(error => {
+    viewBalance() {
+      axios.post('api/viewBalance', {user_id: this.user_id})
+          .then(response => {
+            this.balance = response.data.balance
+          })
+          .catch(error => {
             console.error(error);
           });
-         }
-        }
+    },
+    redirectToSpendingPage() {
+      this.$router.push('/spending')
+    },
+    redirectToBonusPage() {
+      this.$router.push('/bonus')
+    }
+  }
 }
 
 </script>
@@ -277,10 +188,10 @@ export default {
   background: linear-gradient(45deg, #000000 60%, #FFFF00 120%);
 }
 .spending {
-  background: linear-gradient(45deg, #6c5ce7 -20%, #000000 50%, #FFFF00 170%);
+  background: linear-gradient(45deg, #000000 50%, #FFFF00 120%);
 }
 .ton {
-background: linear-gradient(45deg, #FFFF00 -20%, #000000 50%, #6c5ce7 110%);
+background: linear-gradient(45deg, #FFFF00 -20%, #000000 50%);
 }
 
 .overflow-auto {
