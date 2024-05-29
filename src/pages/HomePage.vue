@@ -2,8 +2,8 @@
   <v-container>
     <v-row>
       <v-col cols="6">
-        <v-card class="pt-1" v-for="item in items" :key="item.name" color="black">
-          <div class="text-h6 white--text">{{item.name}} ></div>
+        <v-card class="pt-1" v-model="first_name" color="black">
+          <div class="text-h6 white--text">{{ first_name }} ></div>
         </v-card>
       </v-col>
       <v-col cols="6">
@@ -49,8 +49,6 @@
       <v-col cols="12">
         <v-card
             class="account"
-            v-for="item in items"
-            :key="item.name"
             height="100"
             width="350"
             rounded="xl"
@@ -125,8 +123,8 @@ export default {
     replenishment: null,
     user_id: null,
     balance: null,
+    first_name: null,
     items: [{
-      name: 'Vadim',
       spending: 123,
       alert: false,
     }]
@@ -142,6 +140,7 @@ export default {
       axios.post('api/checkInitData', data)
           .then(response => {
             this.user_id = response.data.user.id;
+            this.first_name = response.data.user.first_name.slice(0, 20)
             this.viewBalance(response.data.user.id)
           })
           .catch(error => {

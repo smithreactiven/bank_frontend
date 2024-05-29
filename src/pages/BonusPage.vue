@@ -16,23 +16,30 @@
             </v-card>
           </v-col>
         </v-row>
-          <v-card color="black" class="pt-5">
+          <v-card color="black" class="pt-5 text-center" v-model="referral_link" >
            <v-row align="center" class="pt-3 px-3">
-              <v-col cols="auto">
-                <div class="campaign-link" @click="copyLink()">
-                  {{link}}
+              <v-col cols="12">
+                <div style="font-size: 14px">
+              https://t.me/GentlyDropBot?start=${{user_id}}
                 </div>
               </v-col>
               <v-spacer></v-spacer>
-              <v-col cols="3">
-                <v-btn rounded="xl" size="small" width="100%" variant="tonal" @click="copyLink()" color='blue'>
-                  Copy
+              <v-col cols="12">
+                <v-btn rounded="xl" size="small" variant="tonal" @click="copyLink" color='blue'>
+                  Скопировать
                 </v-btn>
               </v-col>
             </v-row>
           </v-card>
+            <v-snackbar
+              v-model="alert"
+              :timeout="timeout"
+              color="success"
+              >
+              <v-icon size="small">mdi-content-copy</v-icon>
+              Скопировано в буфер обмена
+            </v-snackbar>
 </v-container>
-
 </template>
 
 
@@ -42,7 +49,10 @@ import axios from "axios";
 export default {
   data: () => ({
     name: "BonusPage",
-    link: 'https'
+    user_id: null,
+    timeout: 2000,
+    referral_link: null,
+    alert: false,
   }),
     mounted() {
     window.Telegram.WebApp.setBackgroundColor("#000000")
@@ -55,7 +65,6 @@ export default {
     unmounted() {
       window.Telegram.WebApp.BackButton.hide()
   },
-
   methods: {
     checkInitData(data) {
       axios.post('api/checkInitData', data)
@@ -65,9 +74,19 @@ export default {
           .catch(error => {
             console.error(error);
           });
+    },
+    copyLink() {
+        this.hapticImpactOccurred('medium')
+        navigator.clipboard.writeText(this.referralLinkText)
+          .then(() => {
+            this.alert = true;
+          })
+          .catch((error) => {
+            console.error("Failed to copy text:", error);
+          });
+      },
     }
   }
-}
 
 </script>
 
