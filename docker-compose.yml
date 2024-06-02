@@ -15,3 +15,4 @@ networks:
   default:
     name: nick-network
     external: true
+    

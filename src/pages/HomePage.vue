@@ -14,10 +14,6 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-container>
-
-    </v-container>
-
     <v-row>
       <v-col cols="6">
         <v-card class="pt-5 spending" elevation="0" @click="redirectToSpendingPage()" style="z-index: 1" variant="tonal" rounded="xl" height="130" width="160" color="white">
@@ -34,7 +30,7 @@
       </v-col>
 
       <v-col cols="6">
-        <v-card class="pt-5 ton" elevation="0" @click="redirectToInviteFriendPage()" style="z-index: 1" variant="tonal" rounded="xl" height="130" width="160" color="white">
+        <v-card class="pt-5 ton" elevation="0" @click="redirectToTonPage()" style="z-index: 1" variant="tonal" rounded="xl" height="130" width="160" color="white">
           <v-card-text class="bg-transparent text-center py-0 px-0">
             <label style="font-size: 16px">
               Посмотреть
@@ -68,7 +64,7 @@
         </v-btn>
       </v-col>
       <v-col cols="6">
-        <v-btn variant="tonal" style="font-size: 11px" rounded="xl">
+        <v-btn variant="tonal" style="font-size: 11px" rounded="xl" @click="redirectToTransferPage()">
           Перевести деньги
         </v-btn>
       </v-col>
@@ -175,7 +171,14 @@ export default {
     },
     redirectToBonusPage() {
       this.$router.push('/bonus')
+    },
+    redirectToTonPage () {
+      this.$router.push('/ton')
+    },
+    redirectToTransferPage() {
+      this.$router.push('/transfer')
     }
+
   }
 }
 

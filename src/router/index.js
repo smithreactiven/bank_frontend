@@ -2,6 +2,8 @@ import {createRouter, createWebHistory} from "vue-router"
 import HomePage from "@/pages/HomePage";
 import SpendingPage from "@/pages/SpendingPage.vue";
 import BonusPage from "@/pages/BonusPage.vue";
+import TonPage from "@/pages/TonPage.vue";
+import TransferPage from "@/pages/TransferPage.vue";
 
 
 const routes = [
@@ -17,6 +19,14 @@ const routes = [
     {
         path: "/bonus",
         component: BonusPage
+    },
+    {
+        path: "/ton",
+        component: TonPage
+    },
+    {
+        path: "/transfer",
+        component: TransferPage
     }
  ]
 

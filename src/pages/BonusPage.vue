@@ -20,7 +20,7 @@
            <v-row align="center" class="pt-3 px-3">
               <v-col cols="12">
                 <div style="font-size: 14px">
-              https://t.me/GentlyDropBot?start=${{user_id}}
+              https://t.me/CashPetBot?start=owner_referral_{{user_id}}
                 </div>
               </v-col>
               <v-spacer></v-spacer>
@@ -75,16 +75,16 @@ export default {
             console.error(error);
           });
     },
-    copyLink() {
-        this.hapticImpactOccurred('medium')
-        navigator.clipboard.writeText(this.referralLinkText)
-          .then(() => {
-            this.alert = true;
-          })
-          .catch((error) => {
-            console.error("Failed to copy text:", error);
-          });
-      },
+  copyLink() {
+    this.hapticImpactOccurred('medium')
+      navigator.clipboard.writeText(this.referralLinkText)
+        .then(() => {
+        this.alert = true;
+      })
+     .catch((error) => {
+        console.error("Failed to copy text:", error);
+      });
+  }
     }
   }
 
